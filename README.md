@@ -114,7 +114,7 @@ PR 예시
 
 
 
-9. **base : master 로 지정하고, compare : 는 자신의 이름으로 작성된 branch 로 변경**
+9. **base : develop 으로 지정하고, compare : 는 자신의 이름으로 작성된 branch 로 변경**
    - **Reviewers 는 멘토를 지정 (JJJoonngg 검색)**
    - **Assignees 에는 assign yourself 를 클릭하거나, 자기 자신을 지정**
    - **그 이후에 내용을 작성하고 `Create pull request` 버튼을 누르면 끝**
@@ -123,3 +123,11 @@ PR 예시
 
 
 
+10. **추후에 작업을 다시 진행 하게 될 경우**
+
+    - **develop 브랜치로 checkout 이후, 패치를 클릭하여 최신화**
+    - 원격과 동일하게 맞추기 위해서 **풀을 클릭해서 변경 사항들 받아오고**
+    - **기존에 존재하던 작업 브랜치 삭제**! (원격 브랜치는 PR merge 시에 리뷰어가 삭제합니다~!)
+    - 추가 작업 진행시에는 **깃플로우를 클릭하여서 진행!** (기존 로직과 동일하게 진행)
+
+    <img src="img/10.png">
