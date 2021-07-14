@@ -2,7 +2,7 @@
 
 ## Unit1 - Kotlin Basics
 
-## PathWay4 - Add a button to an app
+## PathWay3 - Build a basic layout
 
 ### 생일 카드 앱 만들기
 
