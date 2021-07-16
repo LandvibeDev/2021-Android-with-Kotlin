@@ -34,7 +34,7 @@
 
 - Constraint Widget : Top : 16, Left : 16
 
-  <img src="E:\#Summer_Coding_2021\img\Unit1-Pathway3-1.png" alt="image-20210705170949131" style="zoom:67%;" />
+  <img src="img/Unit1-Pathway3-1_yoojin.png"/>
 
 
 
@@ -47,7 +47,7 @@
 * 이미지를 삽입하면 기존의 text가 보이지 않는데, 뷰 순서를 변경하면 된다.
 * Component Tree에서 `ImageView`를 클릭하고 `ConstraintLayout` 바로 아래 `TextViews` 위로 드래그한다.  <span style="color:blue">제일 아래쪽에 깔리는게 `ConstraintLayout`에서 제일 위에 있어야 함.</span>
 
-<img src="E:\#Summer_Coding_2021\img\Unit1-Pathway3-2.png" alt="image-20210705171300659" style="zoom:67%;" />
+<img src="img/Unit1-Pathway3-2_yoojin.png"/>
 
 ### Quiz
 

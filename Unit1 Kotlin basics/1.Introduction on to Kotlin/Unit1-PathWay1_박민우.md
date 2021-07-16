@@ -4,10 +4,6 @@
 
 ## PATHWAY 1 : Introduction to Kotlin
 
-
-
-
-
 ###  프로그램과 함수, 변수
 
 + __프로그램__이란 시스템에서 작업을 시행하기 위한 일련의 명령. 
@@ -103,3 +99,83 @@ fun printBorder(border: String, timesToRepeat: Int) {
   - 함수 정의에 인수와 유형을 추가합니다. ```printBorder(border: String)```
   - 함수 내에서 인수를 사용합니다. ```println(border)```
   - 함수 호출 시 인수를 제공합니다. ```printBorder(border)```
+
+
+
+### Quiz/Unit1/pathway1
+
+1. What is a program?
+
+   => a series of instructions that a computer system executes to accomplish action
+
+   => 어떤 동작을 실행하기 위해 컴퓨터 시스템이 실행하는 일련의 명령어들의 집합
+
+   
+
+2. Which keyword do you use to define a function in Kotlin?
+
+   => fun
+
+   ```kotlin
+   fun printBorder() {
+       println("===================")
+   }
+   ```
+
+   
+
+3. Which of the following do you need to create a Kotlin program that prints a line of text?
+
+   =>
+
+   + ```main()``` 함수
+
+   + 명령어들을 둘러싸는 중괄호 ```{}```
+
+   + ```print()``` 또는 ```println()``` 함수의 호출
+
+   + ```" "```로 둘러싸인 출력할 text
+
+     
+
+4. What do you expect this Kotlin code to do?
+
+   ```kotlin
+   fun main(args: Array<String>) {
+     println("Hello, world!")
+     println("It's a sunny and warm day!")
+   }
+   ```
+
+   => 이 함수는 두 개의 text line을 출력할 것이다. 
+
+   ```kotlin
+   // "Hello, world!"
+   // "It's a sunny and warm day!"
+   ```
+
+
+
+5. How would you modify this `main()` function so that it prints a 6-layer cake for someone's 4th birthday?
+
+   ```kotlin
+   fun main() {
+     val age = 24 // val age = 4로 수정해야 함
+     val layers = 5 // val layers = 6로 수정해야 함
+     printCakeCandles(age)
+     printCakeTop(age)
+     printCakeBottom(age, layers)
+   }
+   ```
+
+   
+
+6. Which of these options correctly calls the function, below, and passes it valid input arguments?
+
+   ```kotlin
+   fun createMessage(name: String, location: String, age: Int) {
+     println("My name is ${name}. I am from ${location}, and I am ${age} years old.")
+   }
+   ```
+
+   => 이 함수를 제대로 호출하려면, ```createMessage("Amy", "Australia", 20)``` 같이 호출해야 한다. 
