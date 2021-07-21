@@ -283,7 +283,7 @@
    println(simpleList)
    ```
 
-   --> ???
+   --> mutableListOf
 
 2. **다음 중 올바른 설명은 무엇인가?**
 
@@ -293,7 +293,7 @@
 
    --> `val words : List<String> = listOf("jump", "run", "skip")`
 
-3. **`RecyclerView`에 어댑터가 필요한 이유는 무엇인가?**
+3. ** `RecyclerView`에 어댑터가 필요한 이유는 무엇인가?**
 
    --> 새 `ViewHolders`를 만들고 데이터를 바인딩
 
