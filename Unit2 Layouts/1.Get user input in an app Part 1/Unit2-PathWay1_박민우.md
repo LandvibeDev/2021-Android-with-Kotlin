@@ -2,11 +2,11 @@
 
 ## Pathway 1 : Get user input in an app Part 1
 
-
-
 ## 🎖 Track 3 : Kotlin의 클래스 및 상속
 
-### What is a class hierarchy?
+
+
+### Class hierarchy
 
 +  `Vegetable`을 Kotlin의 클래스로 만들면 `Legume`을 `Vegetable` 클래스의 *하위 클래스* 또는 *서브클래스*로 만들 수 있습니다. 즉, `Vegetable` 클래스의 모든 속성과 메서드가 `Legume` 클래스에 상속(즉, 사용 가능함)됩니다.
 
@@ -29,7 +29,7 @@
 
 
 + 구현할 클래스
-  + `Dwelling`: 모든 주택에 공통으로 적용되는 정보를 담고 있는 구체적이지 않은 집을 나타내는 기본 클래스입니다.
+  + `Dwelling`: **모든 주택에 공통으로 적용**되는 정보를 담고 있는 구체적이지 않은 집을 나타내는 기본 클래스입니다.
   + `SquareCabin`: 바닥 면적이 정사각형인 나무로 만든 정사각형 통나무집입니다.
   + `RoundHut`: 바닥 면적이 원형인 짚으로 만든 둥근 오두막이고 `RoundTower`의 상위 요소입니다.
   + `RoundTower`: 바닥 면적이 원형이고 층이 여러 개인 돌로 만든 둥근 타워입니다
@@ -38,7 +38,7 @@
 
 + 추상 주택 클래스 
   + ***'추상' 클래스는 완전히 구현되지 않아서 인스턴스화할 수 없는 클래스***입니다. 스케치라고 생각하면 됩니다. 스케치를 통해 무언가에 관한 아이디어와 계획을 통합하지만 **그 무언가를 빌드하기에는 일반적으로 정보가 충분하지 않습니다.** 스케치(추상 클래스)를 사용하여 청사진(클래스)을 만들고 청사진을 통해 실제 객체 인스턴스를 빌드합니다. 
-  + 일반적으로 **슈퍼클래스를 만들어 좋은 점은 모든 서브클래스에 공통적인 속성과 함수를 포함한다는 것**입니다. 속성값과 함수 구현을 알 수 없으면 클래스를 추상으로 만듭니다. 예를 들어 `Vegetables`에는 모든 채소에 일반적인 여러 속성이 있지만 구체적이지 않은 채소의 인스턴스를 만들 수는 없습니다. 모양이나 색상 등을 모르기 때문입니다. 따라서 `Vegetable`은 각 채소에 관한 구체적인 세부정보의 결정을 서브클래스에 맡기는 추상 클래스입니다. 
+  + 일반적으로 **슈퍼클래스를 만들어 좋은 점은 모든 서브클래스에 공통적인 속성과 함수를 포함한다는 것**입니다. 속성값과 함수 구현을 알 수 없으면 클래스를 추상으로 만듭니다. 예를 들어 `Vegetables`에는 모든 채소에 일반적인 여러 속성이 있지만 구체적이지 않은 채소의 인스턴스를 만들 수는 없습니다. 모양이나 색상 등을 모르기 때문입니다. 따라서 `Vegetable`은 **`각 채소에 관한 구체적인 세부정보의 결정을 서브클래스에 맡기는 추상 클래스**입니다. 
   + 추상 클래스 선언은 `abstract` 키워드로 시작합니다.
 
 
@@ -57,9 +57,9 @@
   }
   ```
 
-  + 이 `Dwelling` 클래스에서 주택마다 다를 수 있더라도 모든 주택에 적용되는 항목을 정의합니다. 모든 주택은 건축 자재로 만들어집니다. `Dwelling` 내에서 건축 자재를 나타내는 `String` 유형의 `buildingMaterial` 변수를 만듭니다. 건축 자재는 변경되지 않으므로 `val`을 사용하여 변경 불가능한 변수로 만듭니다.
+  + 이 `Dwelling` 클래스에서 **주택마다 다를 수 있더라도 모든 주택에 적용되는 항목**을 정의합니다. 모든 주택은 건축 자재로 만들어집니다. `Dwelling` 내에서 건축 자재를 나타내는 `String` 유형의 `buildingMaterial` 변수를 만듭니다. 건축 자재는 변경되지 않으므로 `val`을 사용하여 변경 불가능한 변수로 만듭니다.
   + 모든 주택에는 주택에 거주하는 여러 `residents`(`capacity` 이하일 수 있음)가 있으므로 모든 서브클래스가 상속받아 사용하도록 `Dwelling` 슈퍼클래스에서 `residents` 속성을 정의합니다. `residents`를 `Dwelling` 클래스의 생성자에 전달되는 매개변수로 만들 수 있습니다. `residents` 속성은 `var`입니다. 인스턴스가 만들어진 후 거주자 수가 변경될 수 있기 때문입니다. 
-  + 주택의 `capacity`와 현재 `residents` 수가 모두 정의된 상태에서 주택의 또 다른 거주자를 위한 공간이 있는지 확인하는 `hasRoom()` 함수를 만들 수 있습니다. `Dwelling` 클래스에서 `hasRoom()` 함수를 정의하고 구현하면 됩니다. 공간이 있는지 계산하는 공식이 모든 주택에 동일하기 때문입니다. `residents` 수가 `capacity`보다 적으면 `Dwelling`에 공간이 있고 함수는 이 비교에 기반하여 `true`나 `false`를 반환해야 합니다.
+    + 주택의 `capacity`와 현재 `residents` 수가 모두 정의된 상태에서 주택의 또 다른 거주자를 위한 공간이 있는지 확인하는 `hasRoom()` 함수를 만들 수 있습니다. `Dwelling` 클래스에서 `hasRoom()` 함수를 정의하고 구현하면 됩니다. 공간이 있는지 계산하는 공식이 모든 주택에 동일하기 때문입니다. `residents` 수가 `capacity`보다 적으면 `Dwelling`에 공간이 있고 함수는 이 비교에 기반하여 `true`나 `false`를 반환해야 합니다.
 
    
 
@@ -148,7 +148,7 @@ fun main() {
   This type is final, so it cannot be inherited from
   ```
 
-  이 오류는 `RoundHut` 클래스를 서브클래스로 분류하거나 상속할 수 없음을 의미합니다. 기본적으로 Kotlin에서 클래스는 최종 클래스이며 서브클래스로 분류할 수 없습니다. `abstract` 클래스나 `open` 키워드로 표시된 클래스에서만 상속할 수 있습니다. 따라서 상속될 수 있도록 `RoundHut` 클래스를 `open` 키워드로 표시해야 합니다.
+  이 오류는 `RoundHut` 클래스를 서브클래스로 분류하거나 상속할 수 없음을 의미합니다. **기본적으로 Kotlin에서 클래스는 `final` 클래스이며 서브클래스로 분류할 수 없습니다.** `abstract` 클래스나 `open` 키워드로 표시된 클래스에서만 상속할 수 있습니다. 따라서 상속될 수 있도록 `RoundHut` 클래스를 `open` 키워드로 표시해야 합니다.
 
   `RoundHut` 선언 시작 부분에 `open` 키워드를 추가합니다.
 
@@ -194,7 +194,7 @@ fun main() {
   }
   ```
 
-  + 추상 클래스에서 정의된 모든 추상 메서드는 추상 클래스의 서브클래스에서 구현되어야 합니다. 코드를 실행하려면 먼저 서브클래스에서 `floorArea()`를 구현해야 합니다.
+  + 추상 클래스에서 정의된 모든 `abstract` 메서드는 추상 클래스의 서브클래스에서 구현되어야 합니다. 코드를 실행하려면 먼저 서브클래스에서 `floorArea()`를 구현해야 합니다.
 
 
 
@@ -436,27 +436,17 @@ fun main() {
 
 + 이미 익숙한 **Layout Editor**를 사용하는 대신 UI를 설명하는 **XML**을 수정하여 애플리케이션의 레이아웃을 빌드합니다. XML은 *확장성 마크업 언어(eXtensible Markup Language)* 를 의미하며 텍스트 기반 문서를 사용하여 데이터를 설명하는 방법입니다. XML은 확장 가능하고 매우 유연하므로 Android 앱의 UI 레이아웃 정의를 비롯하여 다양한 용도로 사용됩니다. 앱의 문자열과 같은 다른 리소스도 `strings.xml`이라는 XML 파일에 정의된다고 이전 Codelab에서 알아봤습니다.
 
-
-
 + 각 UI 요소는 XML 파일의 XML *요소*로 표현됩니다. 각 요소는 태그로 시작하고 끝나며 각 태그는 `<`로 시작하고 `>`로 끝납니다. **Layout Editor(디자인)**를 사용하여 UI 요소에서 속성을 설정할 수 있는 것처럼 XML 요소에도 *속성*이 있을 수 있습니다. 간단히 말해서 위 UI 요소의 XML은 다음과 같을 수 있습니다. 
 
+  ```kotlin
+  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android">
+  
+  </androidx.constraintlayout.widget.ConstraintLayout>
+  ```
 
++ `ConstraintLayout` 태그를 보면 `TextView`와 같이 `ConstraintLayout`만이 아닌 `androidx.constraintlayout.widget.ConstraintLayout`이라고 표시됩니다. 이는 `ConstraintLayout`이 핵심 Android 플랫폼 외에도 추가 기능을 제공하는 코드 라이브러리가 포함된 **Android Jetpack의 일부**이기 때문입니다. Jetpack에는 앱을 더 쉽게 빌드하는 데 활용할 수 있는 유용한 기능이 있습니다. 이 UI 구성요소는 **'androidx'로 시작**하므로 **Jetpack의 일부**인 것을 알 수 있습니다.
 
-```kotlin
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-```
-
-
-
-+ `ConstraintLayout` 태그를 보면 `TextView`와 같이 `ConstraintLayout`만이 아닌 `androidx.constraintlayout.widget.ConstraintLayout`이라고 표시됩니다. 이는 `ConstraintLayout`이 핵심 Android 플랫폼 외에도 추가 기능을 제공하는 코드 라이브러리가 포함된 Android Jetpack의 일부이기 때문입니다. Jetpack에는 앱을 더 쉽게 빌드하는 데 활용할 수 있는 유용한 기능이 있습니다. 이 UI 구성요소는 'androidx'로 시작하므로 Jetpack의 일부인 것을 알 수 있습니다.
-
-
-
-+ `xmlns`는 XML 네임스페이스를 나타내고 각 줄은 *스키마*나 이러한 단어와 관련된 속성의 어휘를 정의합니다. 예를 들어 `android:` 네임스페이스는 Android 시스템에서 정의한 속성을 표시합니다. 레이아웃 XML의 속성은 모두 이러한 네임스페이스 중 하나로 시작합니다. 
-
-
++ `xmlns`는 **XML 네임스페이스**를 나타내고 각 줄은 **스키마**나 이러한 단어와 관련된 속성의 어휘를 정의합니다. 예를 들어 `android:` 네임스페이스는 Android 시스템에서 정의한 속성을 표시합니다. 레이아웃 XML의 속성은 모두 이러한 네임스페이스 중 하나로 시작합니다. 
 
 + `ConstraintLayout`의 UI 요소에는 `match_parent`를 설정할 수 없습니다. 
 
@@ -476,21 +466,9 @@ fun main() {
 
 ## 🎖 Track 5: 팁 계산
 
-### 개요 - 학습할 내용
-
-+ Android 앱의 기본 구조
-+ UI에서 값을 읽어 코드에 입력하고 조작하는 방법
-+ `findViewById()` 대신 뷰 결합을 사용하여 뷰와 상호작용하는 코드를 더 쉽게 작성하는 방법
-+ Kotlin에서 `Double` 데이터 유형을 사용하여 십진수로 작업하는 방법
-+ 숫자를 통화 형식으로 지정하는 방법
-+ 문자열 매개변수를 사용하여 동적으로 문자열을 만드는 방법
-+ Android 스튜디오에서 **Logcat**을 사용하여 앱의 문제를 찾는 방법
-
-
-
 ### View Binding
 
-+ `findViewById()` 방식은 효과적이지만 앱에 뷰를 더 많이 추가하고 UI가 더 복잡해짐에 따라 `findViewById()`를 사용하는 것이 번거로워질 수 있습니다. Android는 **뷰 결합**이라는 기능을 제공합니다. 사전에 조금만 더 작업하면 뷰 결합을 통해 UI의 뷰에서 메서드를 훨씬 더 쉽고 빠르게 호출할 수 있습니다. Gradle에서 앱의 뷰 결합을 사용 설정하고 몇 가지 코드를 변경해야 합니다.
++ `findViewById()` 방식은 효과적이지만 앱에 뷰를 더 많이 추가하고 UI가 더 복잡해짐에 따라 `findViewById()`를 사용하는 것이 번거로워질 수 있습니다. Android는 **View Binding**이라는 기능을 제공합니다. 사전에 조금만 더 작업하면 뷰 결합을 통해 UI의 뷰에서 메서드를 훨씬 더 쉽고 빠르게 호출할 수 있습니다. Gradle에서 앱의 뷰 결합을 사용 설정하고 몇 가지 코드를 변경해야 합니다.
 
 + 다음의 코드를 `build.gradle` 파일의 `android` 섹션에 추가합니다. 
 
@@ -522,7 +500,7 @@ fun main() {
 
   + `lateinit var binding: ActivityMainBinding`
 
-    `lateinit` 키워드는 새로운 키워드로, 코드가 변수를 사용하기 전에 먼저 초기화할 것임을 확인해 줍니다. 변수를 초기화하지 않으면 앱이 비정상 종료됩니다.
+    `lateinit` 키워드는 새로운 키워드로, **코드가 변수를 사용하기 전에 먼저 초기화할 것임을 확인**해 줍니다. 프로퍼티 초기화를 미루는 것. 변수를 초기화하지 않으면 앱이 비정상 종료됩니다.
 
   
 
@@ -555,7 +533,7 @@ fun main() {
 
   
 
-> 결합 클래스의 이름은 XML 파일의 이름을 카멜 표기법으로 변환하고 이름 끝에 'Binding'을 추가하여 생성됩니다. 마찬가지로 각 뷰를 위한 참조는 밑줄을 삭제하고 뷰 이름을 카멜 표기법으로 변환하여 생성됩니다. 예를 들어 `activity_main.xml`은 `ActivityMainBinding`이 되고 `binding.textView`로 `@id/text_view`에 액세스할 수 있습니다.
+> Binding class의 이름은 XML 파일의 이름을 카멜 표기법으로 변환하고 이름 끝에 'Binding'을 추가하여 생성됩니다. 마찬가지로 각 뷰를 위한 참조는 밑줄을 삭제하고 뷰 이름을 카멜 표기법으로 변환하여 생성됩니다. 예를 들어 `activity_main.xml`은 `ActivityMainBinding`이 되고 `binding.textView`로 `@id/text_view`에 액세스할 수 있습니다.
 
 
 
