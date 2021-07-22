@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
      * This method determines the state and proceeds with the correct action.
      */
     private fun clickLemonImage() {
-        //aslkdjflaksdjflaskdjflak Test
+        
     }
 
     /**
