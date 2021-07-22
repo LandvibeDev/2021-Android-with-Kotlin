@@ -277,7 +277,7 @@ fun main() {
 
 - `RecyclerView`
 
-  <img src="img/Unit2-Pathway3-1_hyein.jpg">
+  <img src="img/Unit2-Pathway3-1_hyein.JPG">
 
   - **항목** - 표시할 목록의 단일 데이터 항목입니다. 앱의 `Affirmation` 객체 하나를 나타낸다.
   - **어댑터** - `RecyclerView`에서 표시할 수 있도록 데이터를 가져와 준비한다.
