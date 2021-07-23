@@ -178,6 +178,84 @@ xmlns:tools="http://schemas.android.com/tools"
 - 제약 조건 속성의 이름은 `layout_constraint<Source>_to<Target>Of` 형식을 따름.
 - `View`의 너비를 포함되는 `ConstraintLayout`의 너비와 같게 하려면 시작과 끝을 상위 요소의 시작과 끝으로 제한하고 너비를 0dp로 설정함.
 
+##### 뷰 결합
+
+사전에 조금 더 작업하면 뷰 결합을 통해 UI의 뷰에서 메서드를 훨신 더 쉽고 빠르게 호출 할 수 있음.
+
+```kotlin
+lateinit var binding: ActivityMainBinding
+```
+
+```lateinit```키워드는 코드가 변수를 사용하기 전에 먼저 초기화할 것임을 확인해줌. 변수를 초기화하지 않으면 앱이 비정상 종료됨. 
+
+```kotlin
+binding = ActivityMainBinding.inflate(layoutInflater)
+```
+
+이 코드 줄은 activity_main.xml 레이아웃에서 Views에 엑세스하는데 사용할 binding객체를 초기화.
+
+```kotlin
+setContentView(binding.root)
+```
+
+Activity의 콘텐츠 뷰를 설정. 이 코드는 레이아웃의 리소스 ID인 ```R.layout.activity_main```을 전달하는 대신, 앱의 뷰 계층 구조 루트인 ```binding.root```를 지정.
+
+상위 뷰와 하위 뷰의 개념을 상기해보면 루트는 모든 뷰에 연결되어 있음. 이제 앱에서  ```View```에 대한 참조가 필요한 경우 ```findViewById```를 호출하는 대신 ```binding```객체에서 뷰 참조를 가져올 수 있다. ```binding```객체는 ID가 있는 앱의 모든 ```View```를 위한 참조를 자동으로 정의.  뷰 결합을 사용하는 것이 훨씬 더 간결해서 ```View```를 위한 참조를 유지할 변수를 만드는 것 보다 결합 객체에서 직접 뷰르 참조를 사용하는 것이 더 좋다.
+
+```kotlin
+// Old way with findViewById()
+val myButton: Button = findViewById(R.id.my_button)
+myButton.text = "A button"
+
+// Better way with view binding
+val myButton: Button = binding.myButton
+myButton.text = "A button"
+
+// Best way with view binding and no extra variable
+binding.myButton.text = "A button"
+```
+
+#####  NumberFormat
+
+```kotlin
+NumberFormat.getCurrencyInstance()
+```
+
+이 코드를 통해 숫자를 통화 형식으로 지정하는 데 사용할 수 있는 숫자 형식 지정 클래스가 제공됨.  
+
+##### 팁 계산 함수
+
+```kotlin
+fun calculateTip() {
+    val stringInTextField = binding.costOfService.text.toString()
+    val cost = stringInTextField.toDouble()
+    val selectedId = binding.tipOptions.checkedRadioButtonId
+    val tipPercentage = when (selectedId) {
+        R.id.option_twenty_percent -> 0.20
+        R.id.option_eighteen_percent -> 0.18
+        else -> 0.15
+    }
+    var tip = tipPercentage * cost
+    val roundUp = binding.roundUpSwitch.isChecked
+    if (roundUp) {
+        tip = kotlin.math.ceil(tip)
+    }
+    val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
+      binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+```
+
+###### 팁 표시
+
+Android 프레임워크는 문자열 매개변수(%s)라는 메커니즘을 제공하므로 개발자는 필요한 경우 숫자가 표시되는 위치를 변경할 수 있음. 
+
+##### debug
+
+Logcat을 사용하여 앱 비정상 종료와 같은 문제를 해결할 수 있음.
+
+스택 트레이스는 호출된 메서드 목록을 보여줌.  이는 코드가 예외를 생성하는 경우에 유용 할 수 있음.
+
+추천을 확인할 수 있는 Analyze->Inspect Code를 사용하여 코드 개선 가능
+
 <hr/>
 
 ##### Quiz
