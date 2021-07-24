@@ -422,7 +422,9 @@
 
    --> The app will crash because it attempted to access the extras property on a null object.
 
-   :point_right: crash가 안 나려면 intent 뒤에도 `?`를 적어야함.
+   :point_right: `intent` 및 `extras` 속성은 null을 허용하므로 값이 있을 수도 있고 없을 수도 있음. 즉, 객체가 있거나 `null`일 수 있음. 앱이 속성에 액세스하거나 `null` 객체에서 함수를 호출하려고 하면 다운이 된다. 이 값에 안전하게 액세스 하려면 이름 뒤에 `?`를 입력한다. 
+
+   ​	위 상황에서는 `intent`가 `null` 값을 가지고 있다 가정하였는데 뒤에 `?`가 없으므로 앱이 다운(crash)가 된다.
 
 9. **Which of the following tasks can be performed in `onCreate()`?**
 
