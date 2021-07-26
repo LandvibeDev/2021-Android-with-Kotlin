@@ -37,7 +37,7 @@
 
   <img src = "https://user-images.githubusercontent.com/31370590/126290914-05546013-f2da-4dd0-b899-c93592aadd1f.PNG" width = "350" height = "500"> 
 
-+ 수명 주기 상태와 콜백 메서드는 activity에 사용된 것과 매우 비슷합니다. 그러나 `onCreate()` 메서드의 차이에 유의해야 합니다. activity에서는 이 메서드를 사용하여 레이아웃을 확장하고 뷰를 바인딩합니다. 그러나 **프래그먼트 수명 주기에서 `onCreate()`는 뷰가 만들어지기 전에 호출**되므로 여기서 레이아웃을 확장할 수 없습니다. 대신 **`onCreateView()`에서 확장**합니다. 그런 다음 뷰를 만든 후 `onViewCreated()` 메서드가 호출되고 여기서 속성을 특정 뷰에 바인딩할 수 있습니다. 
++ 수명 주기 상태와 콜백 메서드는 activity에 사용된 것과 매우 비슷합니다. 그러나 `onCreate()` 메서드의 차이에 유의해야 합니다. activity에서는 이 메서드를 사용하여 레이아웃을 확장하고 뷰를 바인딩합니다. 그러나 **프래그먼트 수명 주기에서 `onCreate()`는 뷰가 만들어지기 전에 호출**되므로 여기서 레이아웃을 확장할 수 없습니다. 대신 `onCreateView()`에서 확장합니다. 그런 다음 뷰를 만든 후 `onViewCreated()` 메서드가 호출되고 여기서 속성을 특정 뷰에 바인딩할 수 있습니다. 
 
 
 
@@ -47,7 +47,7 @@
 
 1. `LetterListFragment`에서 뷰 바인딩을 구현하려면 먼저 null을 허용하는 `FragmentLetterListBinding` 참조를 가져와야 합니다. 
 
-   > 이와 같은 바인딩 클래스는 **build.gradle** 파일의 `buildFeatures` 섹션에서 **`viewBinding` 속성이 사용 설정될 때** Android 스튜디오에서 **각 레이아웃 파일에 생성**됩니다. `FragmentLetterListBinding`의 각 뷰에 프래그먼트 클래스의 속성을 할당하기만 하면 됩니다
+   > 이와 같은 바인딩 클래스는 **build.gradle** 파일의 `buildFeatures` 섹션에서 `viewBinding` 속성이 사용 설정될 때 Android 스튜디오에서 **각 레이아웃 파일에 생성**됩니다. `FragmentLetterListBinding`의 각 뷰에 프래그먼트 클래스의 속성을 할당하기만 하면 됩니다
 
    유형은 `FragmentLetterListBinding?`이어야 하고 초깃값은 `null`이어야 합니다. null을 허용해야 하는 이유는 무엇인가요? `onCreateView()`가 호출될 때까지 레이아웃을 확장할 수 없기 때문입니다. `LetterListFragment`의 인스턴스가 만들어지는 시점(수명 주기가 `onCreate()`로 시작될 때)과 이 속성을 실제로 사용할 수 있는 시점 사이에는 기간이 있습니다. 프래그먼트의 뷰는 프래그먼트의 수명 주기 동안 여러 번 만들어지고 소멸될 수 있다는 사실에도 유의해야 합니다. 이러한 이유로 다른 수명 주기 메서드 `onDestroyView()`에서도 값을 재설정해야 합니다.
 

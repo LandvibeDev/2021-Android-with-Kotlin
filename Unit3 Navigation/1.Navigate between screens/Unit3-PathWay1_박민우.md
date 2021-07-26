@@ -38,7 +38,7 @@
       println("set:    ${setOfNumbers}")
       val set1 = setOf(1,2,3)
       val set2 = mutableSetOf(3,2,1)
-      println("$set1 == $set2: ${set1 == set2}")
+      println("$set1 == $set2: ${set1 == set2}") // 집합이 서로 동일한지 비교
       println("contains 7: ${setOfNumbers.contains(7)}") // contains
   }
   ```
@@ -71,12 +71,11 @@
 
   ```kotlin
   peopleAges.put("Barbara", 42)
-  
-  peopleAges["Joe"] = 51  
+  peopleAges["Barbara"] =42  
   ```
-
   
-
+  
+  
 + 이미 존재하는 키 값을 사용하는 key-value 항목을 추가하려고 하면, 키는 다시 추가되진 않지만 이에 매핑되는 값은 새로운 value 값으로  업데이트 된다. 
 
 
@@ -87,7 +86,7 @@
 
 + 추가, 삭제, 열거, 찾거나, 한 유형의 컬렉션을 다른 유형으로 변환
 
-+ `forEach()`
++ `forEach()` :  자동으로 모든 항목을 탐색한 후 항목별로 작업을 실행
 
   ```kotlin
   peopleAges.forEach { print("${it.key} is ${it.value}, ") }
@@ -97,7 +96,7 @@
 
 
 
-+ `map()` : 컬렉션의 각 항목에 변환을 적용
++ `map()` : 컬렉션의 각 항목에 변환을 적용(colleection의 한 종류인 `map`과는 다른 것)
 
   ```kotlin
   println(peopleAges.map { "${it.key} is ${it.value}" }.joinToString(", ") )
@@ -105,11 +104,11 @@
 
   + `peopleAges.map`은 `peopleAges`의 각 항목에 변환을 적용하고 변환된 항목으로 이루어진 새 컬렉션을 만듭니다.
   + 중괄호 `{}` 안에 있는 부분은 각 항목에 적용할 변환을 정의합니다. 키-값 쌍을 가져와서 문자열로 변환합니다. 예를 들어 `<Fred, 31>`을 `Fred is 31`로 변환됩니다.
-  + `joinToString(", ")`은 변환된 컬렉션의 각 항목을 문자열에 추가하고 `,`로 구분하며 마지막 항목에는 기호를 추가하지 않습니다.
+  + `joinToString(", ")`은 변환된 컬렉션의 각 항목을 문자열에 추가하고 `,`로 구분하며 **마지막 항목에는 기호를 추가하지 않습니다.**
 
 
 
-+ `filter` : 특정 조건과 일치하는 항목을 찾는 것
++ `filter()` : 특정 **조건**과 일치하는 항목들의 컬렉션을 반환
 
   ```kotlin
   val filteredNames = peopleAges.filter { it.key.length < 4 }
@@ -118,6 +117,7 @@
 
   + 이 경우 표현식은 키(`String`)의 길이를 가져와서 4글자 미만인지 여부를 확인합니다. 즉, 이름이 4글자 미만인 항목이 일치하여 새 컬렉션에 추가됩니다.
   + 맵에 필터를 적용할 때 반환되는 유형은 새 맵(`LinkedHashMap`)입니다. 새 맵에서 추가로 처리하거나 새 맵을 목록 같은 다른 유형의 컬렉션으로 변환할 수 있습니다.
+  + 특정 조건이 아니라 특정 **값**에 대한 것은 `contains()`
 
 
 
@@ -133,11 +133,13 @@ peopleAges.forEach { print("${it.key} is ${it.value}") }
 
 **중괄호 안에 작은 함수를 작성하는 것**과 같지만 함수 이름은 없습니다. 이렇게 **이름이 없으며 곧바로 표현식으로 사용할 수 있는 함수**는 아주 유용한 개념으로, ***람다 표현식*** 또는 간략하게 **람다**라고 합니다
 
+=> 중괄호 안에 코드를 작성하는 것, 이름이 없는 작은 함수를 작성하는 것 => 람다
 
+### 
 
-### 함수 유형 
+#### Fuction Type
 
-+ 함수 유형 => 람다를 표현하는 한 가지 방법?
++ 람다의 화살표 왼쪽에 표시되는 값
 
 + ex) `(Int) -> Int` 
 
@@ -153,11 +155,11 @@ peopleAges.forEach { print("${it.key} is ${it.value}") }
 
   + `val triple: (Int) -> Int = { it * 3 }` 이렇게 약식으로 표현할 수 있음.(매개변수가 하나일 때, `it`을 사용하여 매개변수의 선언과 함수 화살표를 생략하고 함수 본문만 사용할 수 있음)
 
-
+<img src = "https://user-images.githubusercontent.com/31370590/126888310-65dfdcd6-fd49-4d63-ba4c-38a86787df64.PNG" width = "400" height = "100">
 
 ### 고차함수
 
-+ **함수(이 경우에는 람다)를 다른 함수로 전달**하거나 **다른 함수에서 함수를 반환하는 것**
++  **함수(이 경우에는 람다)를 다른 함수로 전달**하거나 **다른 함수에서 함수를 반환하는 것**
 
 + `sortedWith()`
 
@@ -192,53 +194,46 @@ fun main() {
 
 
 
-## 🎖Activities and intents
+## 🎖 Activities and intents
 
 ----------
 
 ### Intent
 
-+ 인텐트란 실행할 작업을 나타내는 객체이다. 인텐트는 주로 activity를 실행하는데 사용된다.
-+ implicit intent와 explicit intent가 있고, **명시적 인텐트**는 매우 구체적이며 실행할 활동을 정확하게 알 수 있고 자체 앱의 화면인 경우가 많습니다. **암시적 인텐트**는 좀 더 추상적이며 시스템에 링크 열기나 이메일 작성, 전화 걸기와 같은 작업 유형을 알려주고 시스템은 요청 처리 방법을 파악해야 합니다. 인식하지 못한 채로 두 종류의 인텐트가 실제로 작동하는 것을 확인했을 수 있습니다. 일반적으로 자체 앱에서 활동을 표시할 때 명시적 인텐트를 사용합니다.
-+ 일반적으로 자체 앱에서 활동을 표시할 때 **명시적 인텐트**를 사용하고, 현재 앱과 관련이 없는 작업의 경우 예를 들어 흥미로운 Android 문서 페이지를 발견하여 친구와 공유하려고 할 때 **암시적 인텐트**를 사용합니다. 페이지를 공유하는 데 사용할 앱을 묻는 메뉴가 표시될 수 있습니다. 
++ Intent란 안드로이드 4대 컴포넌트가 서로 데이터를 주고받기 위한 메시지 객체이다 .
+
+  명시적 인텐트 : 액티비티 이름을 명확하게 지정할 때 사용하는 방법
+  암시적 인텐트 : 약속된 액션을 지정하여 안드로이드에서 제공하는 기종의 응용 프로그램을 실행하는 것
 
 
 
+## 명시적 인텐트 설정
 
++ 명시적 인텐트 설정
 
+  ```kotlin
+  val intent = Intent(this, DetailActivity::class.kotlin)
+  intent.putExtra("letter", "hello bundle")
+  intent.putExtra("letter2", 2020)
+  
+  startActivity(intent)
+  ```
 
+  
 
++ `DetailActivity`에서 intent로 넘겨진 정보를 받으려면
 
+  ```kotlin
+  val letterId = intent?.extras?.getString("letter").toString()
+  
+  // val letterId = intent.getStringExtra("letter") 
+  ```
 
+  + 여기서 intent는 `DetailActivity`의 property라기 보다는, property of any Activity 이다. 해당 액티비티를 launch하는데 사용된 intent에 대한 reference를 유지한다.
+  + extras 속성은 `Bundle` 유형이고 짐작했겠지만 인텐트에 전달된 모든 extras에 액세스하는 방법을 제공합니다.
+  + 실제 문자가 `getString`으로 검색되어 `String?`를 반환하므로 `toString()`을 호출하여 `null`이 아닌 `String`인지 확인한다. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 ## 암시적 인텐트 설정
 
@@ -257,7 +252,7 @@ fun main() {
    }
    ```
 
-   
+   + 이를 `LetterAdapter`에서 접근하려면, `DetailActivity.LETTER` 이런 식으로 접근 해야함. 
 
 
 
@@ -273,7 +268,7 @@ fun main() {
 
 
 
-3. `queryUrl`를 정의한 후 새 `intent` 객체를 초기f화합니다.
+3. `queryUrl`를 정의한 후 새 `intent` 객체를 초기화합니다.
 
    ```kotlin
    val intent = Intent(Intent.ACTION_VIEW, queryUrl)
@@ -293,11 +288,19 @@ fun main() {
 
    
 
+## 메뉴 및 아이콘 설정
+
++ 앱 바에 버튼을 추가하여 사용자가 레이아웃을 변경할 수 있도록 
 
 
-## 🎖Stages of the activity lifecycle
 
-+ *activity lifecycle*은 activity의 전체 기간 중 일련의 activity 상태입니다. 수명 주기는 활동이 생성되는 시점에 시작하여 활동이 소멸되어 시스템에서 활동 리소스가 회수될 때까지 이어집니다. 사용자는 앱에서 활동 간에 이동하므로(앱 안팎으로) 이러한 활동은 각각 활동 수명 주기의 다양한 상태로 전환됩니다. 
+
+
+
+
+## 🎖 Stages of the activity lifecycle
+
++ *activity lifecycle*은 activity의 전체 기간 중 일련의 activity 상태입니다. 수명 주기는 활동이 생성되는 시점에 시작하여 활동이 소멸되어 시스템에서 활동 리소스가 회수될 때까지 이어집니다. 사용자는 앱에서 activity 간에 이동하므로(앱 안팎으로) 이러한 활동은 각각 활동 수명 주기의 다양한 상태로 전환됩니다. 
 
 + `Activity` 클래스 자체와 `Activity`의 모든 서브클래스(예: `AppCompatActivity`)는 **일련의 수명 주기 콜백 메서드**를 구현합니다. android에서는 **activity가 한 상태에서 다른 상태로 이동할 때 이러한 콜백을 호출**하고 개발자는 이러한 메서드를 **자체 activity에서 재정의**하여 **수명 주기 상태 변경에 응답해 작업을 실행**할 수 있습니다. 다음 다이어그램은 사용할 수 있는 재정의 가능한 콜백과 함께 수명 주기 상태를 보여줍니다.
 
@@ -333,7 +336,7 @@ fun main() {
 
 #### 2. onStart()
 
-+ `onStart()` 수명 주기 메서드는 `onCreate()` 직후에 호출됩니다. `onStart()`가 실행되면 활동이 화면에 표시됩니다. 활동을 초기화하는 데 한 번만 호출되는 `onCreate()`와 달리 `onStart()`는 활동의 수명 주기에서 여러 번 호출될 수 있습니다.
++ `onStart()` 수명 주기 메서드는 `onCreate()` 직후에 호출됩니다. `onStart()`가 실행되면 **활동이 화면에 표시**됩니다. 활동을 초기화하는 데 한 번만 호출되는 `onCreate()`와 달리 `onStart()`는 **활동의 수명 주기에서 여러 번 호출**될 수 있습니다.
 
 + `onStart()`는 상응하는 `onStop()` 수명 주기 메서드와 페어링됩니다. 사용자가 앱을 시작한 후 기기 홈 화면으로 돌아오면 활동이 중지되고 더 이상 화면에 표시되지 않습니다.
 
@@ -380,20 +383,18 @@ fun main() {
   + 사용자가 앱으로 돌아오면 동일한 활동이 다시 시작되어 화면에 다시 표시됩니다. 수명 주기에서 이 부분을 앱의 *visible* life cycle라고 합니다. 
   + 앱은 백그라운드에 있을 때 시스템 리소스와 배터리 수명을 보존하기 위해 일반적으로 활발히 실행되지 않아야 합니다. `Activity` 수명 주기와 그 콜백을 사용하여 앱이 백그라운드로 이동하는 시점을 알 수 있어 진행 중인 작업을 일시중지할 수 있습니다. 그런 다음 앱이 포그라운드로 전환될 때 작업을 다시 시작합니다.
 
-1. 앱이 처음 시작되면 **`onCreate()`**, **`onStart()`**,**`onResume()`** 콜백이 호출됩니다
+1. 앱이 처음 시작되면 `onCreate()`, `onStart()`,`onResume()` 콜백이 호출됩니다
 2. 컵케이크를 몇 번 탭합니다.
-3. 기기에서 **홈** 버튼을 누르고 Android 스튜디오에서 Logcat을 관찰합니다. 홈 화면으로 돌아오면 앱이 완전히 종료되는 대신 백그라운드로 전환됩니다. **`onPause()`** 메서드와 **`onStop()`** 메서드가 호출되지만 `onDestroy()`는 호출되지 않습니다. 
+3. 기기에서 **홈** 버튼을 누르고 Android 스튜디오에서 Logcat을 관찰합니다. **홈 화면으로 돌아오면 앱이 완전히 종료되는 대신 백그라운드로 전환**됩니다. `onPause()` 메서드와 `onStop()` 메서드가 호출되지만 `onDestroy()`는 호출되지 않습니다. 
    + `onPause()`가 호출되면 앱에 더 이상 포커스가 없습니다.
    + `onStop()` 이후에는 앱이 더 이상 화면에 표시되지 않습니다.
    + 활동이 중지되었지만 `Activity` 객체는 여전히 백그라운드에서 메모리에 있습니다. 활동은 소멸되지 않았습니다. 사용자가 앱으로 돌아올 수 있으므로 Android는 활동 리소스를 유지합니다. 
 
-4. 최근 화면을 사용하여 앱으로 돌아갑니다. Logcat에서 활동은 **`onRestart()`**와 **`onStart()`**로 다시 시작된 후 **`onResume()`**으로 재개됩니다.
+4. 최근 화면을 사용하여 앱으로 돌아갑니다. Logcat에서 활동은 `onRestart()`와 `onStart()`로 다시 시작된 후 `onResume()`으로 재개됩니다.
 
    + 활동이 포그라운드로 돌아오면 `onCreate()` 메서드가 다시 호출되지 않습니다. 활동 객체는 소멸되지 않았으므로 다시 만들지 않아도 됩니다. `onCreate()` 대신 `onRestart()` 메서드가 호출됩니다. 이번에는 활동이 포그라운드로 돌아올 때 **Desserts Sold** 수가 유지됩니다.
 
-   > 여기서 핵심은 ***`onStart()`***와 ***`onStop()`***이 사용자가 활동에서 나가거나 활동으로 이동할 때 여러 번 호출된다는 점입니다.
-
-
+   > 여기서 핵심은 `onStart()`와 `onStop()`이 사용자가 활동에서 나가거나 활동으로 이동할 때 여러 번 호출된다는 점입니다.
 
 
 
@@ -413,7 +414,7 @@ fun main() {
 
 + 포커스와 가시성의 차이가 중요한 이유는 활동이 화면에 ***부분적으로*** 표시되지만 사용자 포커스는 없을 수 있기 때문. 
 
-  ex) 오른쪽 상단의 공유 버튼을 누르면, **기존 activity는 계속 화면 위쪽 절반에 표시되므로 포커스는 상실했지만, 앱은 계속 표시되는 것이므로 `onPause()`만 호출**되고, `onStop()`은 호출되지 않는다. 포커스를 상실했으므로 사용자가 사오작용 할 수 없다. 포그라운드에 있는 '공유' activity에 사용자 포커스가 있다.
+  ex) 오른쪽 상단의 공유 버튼을 누르면, **기존 activity는 계속 화면 위쪽 절반에 표시되므로 포커스는 상실했지만, 앱은 계속 표시되는 것이므로 `onPause()`만 호출**되고, `onStop()`은 호출되지 않는다. 포커스를 상실했으므로 사용자가 상호작용 할 수 없다. 포그라운드에 있는 '공유' activity에 사용자 포커스가 있다.
 
  
 
@@ -428,7 +429,7 @@ fun main() {
 
 + `onSaveInstanceState()`
 
-  **`Activity`가 소멸되면 필요할 수 있는 데이터를 저장**하는 데 사용하는 콜백입니다. 수명 주기 콜백 다이어그램에서 `onSaveInstanceState()`는 활동이 중지된 후(**`onStop()`**메서드 호출 후 바로) 호출됩니다. 또한 앱이 백그라운드로 전환될 때마다 호출됩니다. 
+  **Activity가 소멸되면 필요할 수 있는 데이터를 저장**하는 데 사용하는 콜백입니다. 수명 주기 콜백 다이어그램에서 `onSaveInstanceState()`는 **활동이 중지된 후 호출**됩니다. 또한 앱이 **백그라운드로 전환될 때마다** 호출됩니다. 
 
   `onSaveInstanceState()` 호출을 안전 조치라고 생각하세요. 활동이 포그라운드를 벗어날 때 소량의 정보를 번들에 저장할 수 있습니다. 이제 시스템은 이 데이터를 저장합니다. 앱이 종료될 때까지 기다리면 시스템이 리소스 압력을 받을 수 있기 때문입니다.
 
@@ -462,7 +463,7 @@ fun main() {
   + ```kotlin
     override fun onCreate(savedInstanceState: Bundle) {
 
-  + `onCreate()`는 호출될 때마다 `Bundle`을 가져옵니다. 프로세스 종료로 인해 활동이 다시 시작되면 저장한 번들이 `onCreate()`에 전달됩니다. 활동이 새로 시작되었다면 `onCreate()`의 이 `Bundle`은 `null`입니다. 따라서 번들이 `null`이 아니면 이전에 알려진 지점에서 활동을 '다시 생성'하고 있음을 알 수 있습니다.
+  + `onCreate()`는 호출될 때마다 `Bundle`을 가져옵니다. 프로세스 종료로 인해 **활동이 다시 시작되면 저장한 번들이 `onCreate()`에 전달**됩니다. 활동이 새로 시작되었다면 `onCreate()`의 이 `Bundle`은 `null`입니다. 따라서 **번들이 `null`이 아니면 이전에 알려진 지점에서 활동을 '다시 생성'**하고 있음을 알 수 있습니다.
 
   + 활동이 다시 생성되는 경우 `onRestoreInstanceState()` 콜백은 번들과 함께 `onStart()` 후에 호출됩니다. 대부분의 경우 `onCreate()`에서 액티비티 상태를 복원합니다. 그러나 `onRestoreInstanceState()`는 `onStart()` 후에 호출되므로 `onCreate()`가 호출된 후 일부 상태를 복원해야 한다면 `onRestoreInstanceState()`를 사용하면 됩니다.
 
@@ -470,7 +471,7 @@ fun main() {
 
     ```kotlin
     if (savedInstanceState != null) {
-         revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
+       revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
        dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
     }
     ```
