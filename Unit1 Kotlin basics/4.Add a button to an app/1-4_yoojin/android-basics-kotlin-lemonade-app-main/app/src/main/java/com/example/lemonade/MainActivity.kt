@@ -74,11 +74,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * === DO NOT ALTER THIS METHOD ===
-     *
-     * This method saves the state of the app if it is put in the background.
-     */
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(LEMONADE_STATE, lemonadeState)
         outState.putInt(LEMON_SIZE, lemonSize)
@@ -86,10 +81,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    /**
-     * Clicking will elicit a different response depending on the state.
-     * This method determines the state and proceeds with the correct action.
-     */
+    // lemonadeState 변경
     private fun clickLemonImage() {
 
         if(lemonadeState == SELECT){
@@ -125,9 +117,8 @@ class MainActivity : AppCompatActivity() {
         setViewElements()   //이미지 변경을 위해 setViewElements() 호출
     }
 
-    /**
-     * Set up the view elements according to the state.
-     */
+
+    //lemonadeState에 맞게 문구와 이미지 설정
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
 
@@ -153,11 +144,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * === DO NOT ALTER THIS METHOD ===
-     *
-     * Long clicking the lemon image will show how many times the lemon has been squeezed.
-     */
+
     private fun showSnackbar(): Boolean {
         if (lemonadeState != SQUEEZE) {
             return false
@@ -172,10 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-/**
- * A Lemon tree class with a method to "pick" a lemon. The "size" of the lemon is randomized
- * and determines how many times a lemon needs to be squeezed before you get lemonade.
- */
+
 class LemonTree {
     fun pick(): Int {
         return (2..4).random()
