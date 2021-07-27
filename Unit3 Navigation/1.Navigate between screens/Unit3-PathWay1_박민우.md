@@ -2,7 +2,7 @@
 
 ## Pathway 1 : Navigate between screens
 
-## 🎖Navigate between screens
+## 🎖 Navigate between screens
 
 --------
 

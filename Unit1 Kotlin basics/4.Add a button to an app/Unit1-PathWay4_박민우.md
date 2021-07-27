@@ -4,7 +4,7 @@
 
 
 
-## 🎖Track 1 : Classes and object instances in Kotlin 
+## 🎖 Track 1 : Classes and object instances in Kotlin 
 
 ###  학습할 내용
 
@@ -18,7 +18,7 @@
 
 +  `IntRange`는 또 다른 데이터 유형으로, 시작점부터 끝점까지 정수의 범위를 나타냅니다. `1..6`은 Kotlin 범위인 것을 알 수 있습니다. 시작 숫자, 점 두 개, 끝 숫자가 순서대로 있기 때문입니다(사이에 공백 없음). 정수 범위의 다른 예로는 숫자 2~5의 `2..5`, 숫자 100~200의 `100..200`이 있습니다.
 
-+ `main()` 내에서 변수를 `randomNumber`라는 `val`로 정의하고,   **`randomNumber`가 `diceRange` 범위에서 `random()`를 호출한 결과 값을 갖도록** 합니다.
++ `main()` 내에서 변수를 `randomNumber`라는 `val`로 정의하고,   ** `randomNumber`가 `diceRange` 범위에서 `random()`를 호출한 결과 값을 갖도록** 합니다.
 
 ```kotlin
 fun main() {
@@ -90,7 +90,6 @@ fun main() {
 }
 
 class Dice (val numSides: Int) {
-
     fun roll(): Int {
         val randomNumber = (1..numSides).random()
         return randomNumber
@@ -111,7 +110,7 @@ class Dice (val numSides: Int) {
 
 
 
-## 🎖Track 2 : Create an interactive Dice Roller app
+## 🎖 Track 2 : Create an interactive Dice Roller app
 
 ### 앱 레이아웃 만들기
 
@@ -184,7 +183,7 @@ class MainActivity : AppCompatActivity() {
 + ```
    rollButton.setOnClickListener {
              val resultTextView: TextView = findViewById(R.id.textView)
-              resultTextView.text = "6"
+             resultTextView.text = "6"
           }
   ```
 
@@ -214,8 +213,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class Dice(private val numSides: Int) { // 이렇게 class를 정의할 때, 바로 매개변수?로 넣는 것은 신기, 그러면 numSides는 멤버 변수인가?
-
+class Dice(private val numSides: Int) { 
     fun roll(): Int {
         return (1..numSides).random()
     }
@@ -252,7 +250,7 @@ class Dice(private val numSides: Int) { // 이렇게 class를 정의할 때, 바
 
 
 
-## 🎖Track 3 : Add conditional behavior in kotlin
+## 🎖 Track 3 : Add conditional behavior in kotlin
 
 ### Decision making in your code
 
