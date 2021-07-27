@@ -313,7 +313,7 @@ fun main() {
 
 
 
-## 🎖Track 4 : Add images to the Dice Roller app
+## 🎖 Track 4 : Add images to the Dice Roller app
 
 ```kotlin
 val drawableResource = when (diceRoll) {
@@ -457,3 +457,5 @@ private fun rollDice() {
    + if, else
 
    + when
+
+ 
