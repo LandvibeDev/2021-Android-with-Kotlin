@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val LEMONADE_STATE = "LEMONADE_STATE"
     private val LEMON_SIZE = "LEMON_SIZE"
     private val SQUEEZE_COUNT = "SQUEEZE_COUNT"
+
     // SELECT represents the "pick lemon" state
     private val SELECT = "select"
     // SQUEEZE represents the "squeeze lemon" state
@@ -42,7 +43,9 @@ class MainActivity : AppCompatActivity() {
     private val RESTART = "restart"
     // Default the state to select
     private var lemonadeState = "select"
+
     // Default lemonSize to -1
+    // lemonSize : 얼마나 tab 해야 레모네이드를 만들 수 있는지
     private var lemonSize = -1
     // Default the squeezeCount to -1
     private var squeezeCount = -1
@@ -67,9 +70,14 @@ class MainActivity : AppCompatActivity() {
         setViewElements()
         lemonImage!!.setOnClickListener {
             // TODO: call the method that handles the state when the image is clicked
+            // 앱의 상태를 업데이트 해야 한다. clcikLemonImage() 메서드를 이용해
+            clickLemonImage()
         }
         lemonImage!!.setOnLongClickListener {
             // TODO: replace 'false' with a call to the function that shows the squeeze count
+            // 길게 눌렀을 때 얼마나 레몬을 짯는지 알려줌
+            // showSnackbar() 메서드 이용
+            showSnackbar()
             false
         }
     }
@@ -96,6 +104,40 @@ class MainActivity : AppCompatActivity() {
         //  lemonade making progression (or at least make some changes to the current state in the
         //  case of squeezing the lemon). That should be done in this conditional statement
 
+        when(lemonadeState){
+            SELECT->{
+                lemonadeState = SQUEEZE
+                lemonSize = LemonTree().pick() // 랜덤하게 lemonSize 설정
+                squeezeCount = 0
+                setViewElements()
+            }
+            SQUEEZE->{
+                squeezeCount++
+                lemonSize--
+                if(lemonSize==0){
+                    lemonadeState = DRINK
+                    lemonSize = -1
+                }
+                setViewElements()
+            }
+            DRINK->{
+                lemonadeState = RESTART
+                // lemonSize = -1 // why?
+                setViewElements()
+            }
+            RESTART->{
+                lemonadeState = SELECT
+                setViewElements()
+            }
+            else->{
+
+            }
+        }
+
+
+
+
+
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
         //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
@@ -107,10 +149,14 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: When the image is clicked in the DRINK state the state should become RESTART
 
-        // TODO: When the image is clicked in the RESTART state the state should become SELECT
+        // TODO: When the image is clicked in the RESTART state the state sholud become SELECT
 
         // TODO: lastly, before the function terminates we need to set the view elements so that the
         //  UI can reflect the correct state
+
+
+
+        // moving the app from the current state to the next and updating any variables as needed.
     }
 
     /**
@@ -118,6 +164,8 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
+
+
         // TODO: set up a conditional that tracks the lemonadeState
 
         // TODO: for each state, the textAction TextView should be set to the corresponding string from
@@ -135,7 +183,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun showSnackbar(): Boolean {
         if (lemonadeState != SQUEEZE) {
-            return false
+            return false // 그럼 squeeze 상태가 아니면 길게 눌렀을 때, 아무일도 발생 x?
         }
         val squeezeText = getString(R.string.squeeze_count, squeezeCount)
         Snackbar.make(
