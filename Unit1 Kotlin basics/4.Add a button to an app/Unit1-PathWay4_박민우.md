@@ -361,9 +361,104 @@ private fun rollDice() {
 
 
 
+## 🎖 Track 5 : lemonade App
+
+#### 리소스 접근하는 법
+
++ drawble resource
+  `lemonImage?.setImageResource(R.drawable.lemon_tree)`
+
++ string resource
+
+  `textAction.setText(R.string.lemon_select)`
 
 
-### Quiz/Unit1/Pathway4
+
+#### 문자열 서식 지정
+
+문자열의 서식을 지정해야 할 경우, 다음 예시와 같이 문자열 리소스에 서식 인수를 추가하여 지정할 수 있습니다.
+
+```kotlin
+<string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
+```
+
+이 예시는 서식 문자열에 두 개의 인수가 있습니다. `%1$s`는 문자열이고 `%2$d`는 10진수입니다. `getString(int, Object...)`을 호출하여 문자열의 서식을 지정해보겠습니다. 예를 들면 다음과 같습니다.
+
+```kotlin
+var text = getString(R.string.welcome_messages, username, mailCount)
+```
+
+
+
+#### View를 클릭했을 때, 동작 실행하기
+
+```kotlin
+private var lemonImage: ImageView? = null
+
+lemonImage = findViewById(R.id.image_lemon_state)
+
+lemonImage!!.setOnClickListener {
+            // TODO: call the method that handles the state when the image is clicked
+            clickLemonImage()
+        }
+
+lemonImage!!.setOnLongClickListener {
+            // TODO: replace 'false' with a call to the function that shows the squeeze count
+            // 길게 눌렀을 때 얼마나 레몬을 짰는지 알려줌
+            showSnackbar()
+        }
+```
+
+
+
+#### onSaveInstanceState 
+
++ `onSaveInstanceState()` 메소드를 이용하면 Activity가 종료될 때 데이터를 저장할 수 있습니다. 일반적으로 사용자가 정상적인 행동으로 Activity를 종료할 때는 해당 이벤트를 미리 감지하고 그에 맞는 대처를 해줄 수가 있지만, 실제로는 다양한 상황에서 Activity가 종료되는 현상이 발생할 수 있습니다. 그리고 다시 액티비티가 실행될 때는 `onCreate(savedInstanceState: Bundle?)`에서 Bundle안의 data를 받아서 이용할 수 있다.
+
+
+
++ Activity가 종료되는 경우
+  + 사용자가 ‘뒤로 가기(Back)’ 버튼을 눌러 Activity를 종료한 경우
+  + Activity가 백그라운드에 있을 때 시스템 메모리가 부족해진 경우(OS가 강제 종료시킴)
+  + 언어 설정을 변경할 때
+  + 화면을 가로/세로 회전할 때
+  + 폰트 크기나 폰트를 변경했을 때
+
+
+
++ 사용 예시
+
+  ```kotlin
+  override fun onSaveInstanceState(outState: Bundle) {
+      outState.putString(LEMONADE_STATE, lemonadeState)
+      outState.putInt(LEMON_SIZE, lemonSize)
+      outState.putInt(SQUEEZE_COUNT, squeezeCount)
+      super.onSaveInstanceState(outState)
+  }
+  
+  override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContentView(R.layout.activity_main)
+  
+          // === DO NOT ALTER THE CODE IN THE FOLLOWING IF STATEMENT ===
+          if (savedInstanceState != null) {
+              lemonadeState = savedInstanceState.getString(LEMONADE_STATE, "select")
+              lemonSize = savedInstanceState.getInt(LEMON_SIZE, -1)
+              squeezeCount = savedInstanceState.getInt(SQUEEZE_COUNT, -1)
+          }
+  ```
+
+
+
+
+
+
+
+
+
+
+
+## Quiz/Unit1/Pathway4
 
 1. Which of the following is an example of a class?
 
