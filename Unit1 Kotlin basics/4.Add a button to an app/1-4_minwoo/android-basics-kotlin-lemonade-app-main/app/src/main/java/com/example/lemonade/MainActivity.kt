@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         // === END IF STATEMENT ===
 
         lemonImage = findViewById(R.id.image_lemon_state)
-        setViewElements()
+        setViewElements() // 처음 imageView => lemon_tree
         lemonImage!!.setOnClickListener {
             // TODO: call the method that handles the state when the image is clicked
             // 앱의 상태를 업데이트 해야 한다. clcikLemonImage() 메서드를 이용해
@@ -134,10 +134,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
         //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
@@ -164,8 +160,29 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
+        // lemonImage
 
+        when(lemonadeState){
+            SELECT->{
+                lemonImage?.setImageResource(R.drawable.lemon_tree)
+                textAction.setText(R.string.lemon_select)
+            }
+            SQUEEZE->{
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+                textAction.setText(R.string.lemon_squeeze)
+            }
+            DRINK->{
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+                textAction.setText(R.string.lemon_drink)
+            }
+            RESTART->{
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+                textAction.setText(R.string.lemon_empty_glass)
+            }
+            else->{
 
+            }
+        }
         // TODO: set up a conditional that tracks the lemonadeState
 
         // TODO: for each state, the textAction TextView should be set to the corresponding string from
