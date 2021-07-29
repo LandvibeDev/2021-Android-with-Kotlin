@@ -83,35 +83,36 @@ class MainActivity : AppCompatActivity() {
 
     // lemonadeState 변경
     private fun clickLemonImage() {
+        when (lemonadeState) {
+            SELECT -> {
+                lemonadeState = SQUEEZE
 
-        if(lemonadeState == SELECT){
-            lemonadeState = SQUEEZE;
+                lemonSize = lemonTree.pick()   //lemonSize만큼 squeeze를 해야 drink 사진으로 넘어감.
 
-            lemonSize = lemonTree.pick();   //lemonSize만큼 squeeze를 해야 drink 사진으로 넘어감.
-
-            squeezeCount = 0;
-        }
-
-        else if(lemonadeState == SQUEEZE){
-            squeezeCount++; //snakbar의 메시지로 활용됨.
-            lemonSize--;
-
-            if(lemonSize == 0){ //lemonSize만큼 squeeze 하면 DRNIK 상태로 변경
-                lemonadeState = DRINK;
+                squeezeCount = 0
             }
 
-            else{
-                lemonadeState = SQUEEZE;
+            SQUEEZE -> {
+                squeezeCount++ //snakbar의 메시지로 활용됨.
+                lemonSize--
+
+                if(lemonSize == 0){ //lemonSize만큼 squeeze 하면 DRNIK 상태로 변경
+                    lemonadeState = DRINK
+                }
+
+                else{
+                    lemonadeState = SQUEEZE
+                }
             }
-        }
 
-        else if(lemonadeState == DRINK){
-            lemonadeState = RESTART;
-            lemonSize = -1; //lemonSize 초기화
-        }
+            DRINK -> {
+                lemonadeState = RESTART
+                lemonSize = -1  //lemonSize 초기화
+            }
 
-        else if (lemonadeState == RESTART){
-            lemonadeState = SELECT
+            RESTART -> {
+                lemonadeState = SELECT
+            }
         }
 
         setViewElements()   //이미지 변경을 위해 setViewElements() 호출
@@ -122,24 +123,23 @@ class MainActivity : AppCompatActivity() {
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
 
-        if(lemonadeState == SELECT){
-            textAction.resources.getString(R.string.lemon_select)   //strings.xml에 있는 text 가져옴.
-            lemonImage?.setImageResource(R.drawable.lemon_tree)   //해당 이미지로 변경, onCreate()함수에서 lemonImage 정의함. 이미 정의된 변수 활용
-        }
-
-        else if(lemonadeState == SQUEEZE){
-            textAction.resources.getString(R.string.lemon_squeeze)
-            lemonImage?.setImageResource(R.drawable.lemon_squeeze)
-        }
-
-        else if(lemonadeState == DRINK){
-            textAction.resources.getString(R.string.lemon_select)
-            lemonImage?.setImageResource(R.drawable.lemon_drink)
-        }
-
-        else if(lemonadeState == RESTART){
-            textAction.resources.getString(R.string.lemon_select)
-            lemonImage?.setImageResource(R.drawable.lemon_restart)
+        when (lemonadeState) {
+            SELECT -> {
+                textAction.resources.getString(R.string.lemon_select)   //strings.xml에 있는 text 가져옴.
+                lemonImage?.setImageResource(R.drawable.lemon_tree)   //해당 이미지로 변경, onCreate()함수에서 lemonImage 정의함. 이미 정의된 변수 활용
+            }
+            SQUEEZE -> {
+                textAction.resources.getString(R.string.lemon_squeeze)
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+            }
+            DRINK -> {
+                textAction.resources.getString(R.string.lemon_select)
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+            }
+            RESTART -> {
+                textAction.resources.getString(R.string.lemon_select)
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+            }
         }
 
     }
