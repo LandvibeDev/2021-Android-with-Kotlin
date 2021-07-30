@@ -35,10 +35,10 @@
 - **Fragment lifecycle**
 
   - INITIALIZED : A new instance of the fragment has been instantiated (프래그먼트의 새 인스턴스가 인스턴스화됨.)
-  - CREATED : The first fragment lifecycle methods are called. During this state, the view associated with the fragment is also created. (첫 번째 프래그먼트 수명주기 메서드가 호출됨. 이 상ㅌ에서 프래그먼트와 연결된 뷰도 만들어짐.)
+  - CREATED : The first fragment lifecycle methods are called. During this state, the view associated with the fragment is also created. (첫 번째 프래그먼트 수명주기 메서드가 호출됨. 이 상태에서 프래그먼트와 연결된 뷰도 만들어짐.)
   - STARTED : The fragment is visible onscreen but does not have "focus", meaning it can't respond to user input (프래그먼트가 화면에 표시되지만 '포커스'가 없으므로 사용자 입력에 응답할 수 없음.')
   - RESUMED : The fragment is visible and has focus. (프래그먼트가 표시되고 포커스가 있음.)
-  - DESTROYED : The fragment object has been de-instantiated. (프래그먼트 객체으 ㅣ인스턴스화가 취소됨.)
+  - DESTROYED : The fragment object has been de-instantiated. (프래그먼트 객체의 인스턴스화가 취소됨.)
 
 - **Method**
 
@@ -106,7 +106,11 @@
 
    **The ___ method needs to be overridden in the host activity to ensure your app's fragment-based navigation responds to the app's "Up" button.**
 
-   --> :question: :question:
+   --> `onSupportNavigateUp()`
+
+   :pencil: `onSupportNavigateUp()` method is called whenever the user chooses to navigate Up within your application's activity hierarchy from the action bar.
+
+   :pencil: Fragment에서 뒤로가기 버튼 동작하게 만들기 위해서 `onSupportNavigateUp()` method를 사용한다.
 
 6. **Given the code for navigating between two fragments in a note-taking app, a list of books and a list of notes, which of the following is true about the navigation graph file?**
 
@@ -121,5 +125,10 @@
 
    :question: 'The books list fragment has an argument called `bookIndex`.' 라는 문장은 왜 틀린것인가?
 
+   :point_right: action을 처리하는 곳은 Notes List fragment 이므로 위 문장이 틀렸다.
+   
+   
+   
    :question: 'Both the books list and notes list are destinations' 라는 문장에서 "books list --> notes list 방향"으로 판단하였는데 둘 다 왔다갔다가 가능하므로 모두 destinations이라고 표현하는 것인가..?
-
+   
+   :point_right: 뒤로 가기 버튼을 통해서 뒤로 돌아갈 수 있으므로 모두 destinations이 될 수 있다!
