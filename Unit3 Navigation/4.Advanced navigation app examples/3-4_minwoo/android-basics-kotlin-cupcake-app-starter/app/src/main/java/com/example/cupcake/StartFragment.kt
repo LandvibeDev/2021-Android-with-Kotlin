@@ -21,6 +21,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.cupcake.databinding.FragmentStartBinding
 
 /**
@@ -47,6 +49,7 @@ class StartFragment : Fragment() {
 
         binding?.apply {
             // Set up the button click listeners
+            // 각  버튼을 탭하면 각 버튼에 해당하는 컵케이크의 수량을 매개변수로 하여 orderCupcake() 메서드가 호출됩니다.
             orderOneCupcake.setOnClickListener { orderCupcake(1) }
             orderSixCupcakes.setOnClickListener { orderCupcake(6) }
             orderTwelveCupcakes.setOnClickListener { orderCupcake(12) }
@@ -57,8 +60,9 @@ class StartFragment : Fragment() {
      * Start an order with the desired quantity of cupcakes and navigate to the next screen.
      */
     fun orderCupcake(quantity: Int) {
-        Toast.makeText(activity, "Ordered $quantity cupcake(s)", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_startFragment_to_flavorFragment)
     }
+
 
     /**
      * This fragment lifecycle method is called when the view hierarchy associated with the fragment
