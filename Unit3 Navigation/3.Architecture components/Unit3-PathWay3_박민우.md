@@ -443,7 +443,7 @@ viewModel.currentScrambledWord.observe(viewLifecycleOwner,
 
   **binding data (from code) to views** + **view binding (binding views to code)**이다. 
 
-  => 데이터를 뷰에 바인딩(레이아웃 파일에서 앱 데이터를 참조할 수 있도록) + 뷰에 코드를 바인딩
+  => 데이터를 뷰에 바인딩(레이아웃 파일에서 앱 데이터를 참조할 수 있도록) + 뷰를 코드에 바인딩
 
   <br></br><br></br>
 
