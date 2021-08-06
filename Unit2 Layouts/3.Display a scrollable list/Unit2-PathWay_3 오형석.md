@@ -340,7 +340,7 @@ recyclerView.setHasFixedSize(true)
 
 #### Quiz
 
-1. 아래 코드를 실행하기 전에 simpleList를 **변경가능한** 목록으로 초기화해야 합니다.
+1. 아래 코드를 실행하기 전에 simpleList를 **mutable** 목록으로 초기화해야 합니다.
 
 ```
 println(simpleList)
