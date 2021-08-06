@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         // === DO NOT ALTER THE CODE IN THE FOLLOWING IF STATEMENT ===
         if (savedInstanceState != null) {
-            lemonadeState = savedInstanceState.getString(LEMONADE_STATE, "select")
+            lemonadeState = savedInstanceState.getString(LEMONADE_STATE, SELECT)
             lemonSize = savedInstanceState.getInt(LEMON_SIZE, -1)
             squeezeCount = savedInstanceState.getInt(SQUEEZE_COUNT, -1)
         }
@@ -65,13 +65,11 @@ class MainActivity : AppCompatActivity() {
 
         lemonImage = findViewById(R.id.image_lemon_state)
         setViewElements(SELECT)
-        lemonImage!!.setOnClickListener {
-            // TODO: call the method that handles the state when the image is clicked
+        lemonImage?.setOnClickListener {
             clickLemonImage()
 
         }
         lemonImage!!.setOnLongClickListener {
-            // TODO: replace 'false' with a call to the function that shows the squeeze count
             showSnackbar()
         }
     }
@@ -93,56 +91,37 @@ class MainActivity : AppCompatActivity() {
      * This method determines the state and proceeds with the correct action.
      */
     private fun clickLemonImage() {
-        // TODO: use a conditional statement like 'if' or 'when' to track the lemonadeState
-        //  when the the image is clicked we may need to change state to the next step in the
-        //  lemonade making progression (or at least make some changes to the current state in the
-        //  case of squpezing the lemon). That should be done in this conditional statement
-        if(lemonadeState==SELECT)
-        {
-            lemonadeState=SQUEEZE
-            lemonSize=lemonTree.pick()
-            squeezeCount=0
-            setViewElements(SQUEEZE)
-        }
-        else if(lemonadeState==SQUEEZE)
-        {
 
-            squeezeCount++
-            lemonSize--
-            if(lemonSize==0) {
-                lemonadeState = DRINK
-                setViewElements(DRINK)
+        when(lemonadeState)
+        {
+            SELECT->{
+                lemonadeState=SQUEEZE
+                lemonSize=lemonTree.pick()
+                squeezeCount=0
+                setViewElements(SQUEEZE)
             }
-        }
-        else if(lemonadeState==DRINK)
-        {
-            lemonSize=-1
-            lemonadeState=RESTART
-            setViewElements(RESTART)
+            SQUEEZE->{
+                squeezeCount++
+                lemonSize--
+                if(lemonSize==0) {
+                    lemonadeState = DRINK
+                    setViewElements(DRINK)
+                }
+
+            }
+            DRINK->{
+                lemonSize=-1
+                lemonadeState=RESTART
+                setViewElements(RESTART)
+            }
+            else->{
+                lemonadeState=SELECT
+                setViewElements(SELECT)
+            }
 
         }
-        else if(lemonadeState==RESTART)
-        {
-            lemonadeState=SELECT
-            setViewElements(SELECT)
-        }
 
 
-        // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
-        //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
-        //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
-
-        // TODO: When the image is clicked in the SQUEEZE state the squeezeCount needs to be
-        //  INCREASED by 1 and lemonSize needs to be DECREASED by 1.
-        //  - If the lemonSize has reached 0, it has been juiced and the state should become DRINK
-        //  - Additionally, lemonSize is no longer relevant and should be set to -1
-
-        // TODO: When the image is clicked in the DRINK state the state should become RESTART
-
-        // TODO: When the image is clicked in the RESTART state the state sholud become SELECT
-
-        // TODO: lastly, before the function terminates we need to set the view elements so that the
-        //  UI can reflect the correct state
     }
 
     /**
@@ -151,35 +130,26 @@ class MainActivity : AppCompatActivity() {
     private fun setViewElements(state:String) {
         val textAction: TextView = findViewById(R.id.text_action)
 
-        if(state==SELECT)
+        when(state)
         {
-            lemonImage?.setImageResource(R.drawable.lemon_tree)
-            textAction.text="Click to select a lemon!"
-        }
-        else if(state==SQUEEZE)
-        {
-            lemonImage?.setImageResource(R.drawable.lemon_squeeze)
-            textAction.text="Click to juice the lemon!"
-        }
-        else if(state==DRINK)
-        {
-            lemonImage?.setImageResource(R.drawable.lemon_drink)
-            textAction.text="Click to drink your lemonade!!"
-        }
-        else if(state==RESTART)
-        {
-            lemonImage?.setImageResource(R.drawable.lemon_restart)
-            textAction.text="Click to start again!"
+            SELECT->{
+                lemonImage?.setImageResource(R.drawable.lemon_tree)
+                textAction.text="Click to select a lemon!"
+            }
+            SQUEEZE->{
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+                textAction.text="Click to juice the lemon!"
+            }
+            DRINK->{
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+                textAction.text="Click to drink your lemonade!!"
+            }
+            else->{
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+                textAction.text="Click to start again!"
+            }
         }
 
-        // TODO: set up a conditional that tracks the lemonadeState
-
-        // TODO: for each state, the textAction TextView should be set to the corresponding string from
-        //  the string resources file. The strings are named to match the state
-
-        // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
-        //  drawable from the drawable resources. The drawables have the same names as the strings
-        //  but remember that they are drawables, not strings.
     }
 
     /**
