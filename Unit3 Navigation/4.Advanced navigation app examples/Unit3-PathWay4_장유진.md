@@ -15,7 +15,7 @@
 - **cupcake-app-starter 만들기** 
   - **MainActivity.kt**
     - 활동의 콘텐츠 뷰를 `activity_main.xml`로 설정하는 기본 생성 코드와 유사한 코드가 존재
-    - `super.onCreate(savedInstanceState)`의 일부로 확장될 레이아웃을 퐇ㅁ하는 매개변수화된 생성자 `AppCompatActivity(@LayoutRes int contentLayoutId)`를 사용
+    - `super.onCreate(savedInstanceState)`의 일부로 확장될 레이아웃을 포함하는 매개변수화된 생성자 `AppCompatActivity(@LayoutRes int contentLayoutId)`를 사용
   - **fragment_start.xml**
     - 앱에 표시되는 첫 번째 화면
     - 컵 케이크의 이미지와 주문할 컵케이크 수를 선택할 수 있는 버튼3개가 존재
