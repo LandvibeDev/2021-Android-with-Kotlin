@@ -14,6 +14,9 @@
   - [Pickup 및 Summary 프래그먼트를 업데이트하여 뷰 모델 사용](#Pickup-및-Summary-프래그먼트를-업데이트하여-뷰-모델-사용)
   - [주문 세부 정보에서 가격 계산](#주문-세부-정보에서-가격-계산)
   - [리스너 결합을 사용하여 클릭 리스너 설정](#리스너-결합을-사용하여-클릭-리스너-설정)
+- [Navigation and backstack](#Navigation-and-backstack)
+  + [작업 및 백스택 알아보기](#작업-및-백스택-알아보기)
+  + [주문 전송하기](#주문-전송하기)
 
 ------
 
@@ -742,13 +745,13 @@ var <property-name> : <property-type> by <delegate-class>()
 + 먼저 앱의 탐색 그래프에 탐색 작업을 추가하여 사용자가 다음의 대상에서 `StartFragment`로 다시 이동할 수 있도록 합니다.  `summaryFragment`, `pickupFragment`, `flavorFragment`에서 클릭하고 드래그하여 `startFragment`로 이어지는 새 action을 만듭니다. 
 + 이러한 변경을 통해 사용자는 주문 흐름 내의 후반 프래그먼트 중 하나에서 주문 흐름의 시작으로 이동할 수 있습니다. 이제 이러한 작업으로 실제로 이동하는 코드가 필요합니다. 적합한 위치는 **Cancel** 버튼을 탭하는 시점입니다.
 
-
+<br>
 
 ##### 레이아웃에 Cancel 버튼 추가하기
 
 먼저 `StartFragment`를 제외한 모든 프래그먼트에 해당하는 **Cancel** 버튼을 레이아웃 파일에 추가합니다. 주문 흐름의 첫 번째 화면에 이미 있는 경우에는 주문을 취소할 필요가 없습니다.
 
-
+<br>
 
 #### Cancel 버튼의 클릭 리스너 추가하기
 
@@ -763,7 +766,7 @@ var <property-name> : <property-type> by <delegate-class>()
    }
    ```
 
-   
+   <br>
 
 2. 리스너 결합을 사용하여 `fragment_flavor.xml` 레이아웃의 **Cancel** 버튼에 클릭 리스너를 설정합니다. 이 버튼을 클릭하면 `FragmentFlavor` 클래스에서 방금 생성한 `cancelOrder()` 메서드가 호출됩니다.
 
@@ -773,11 +776,11 @@ var <property-name> : <property-type> by <delegate-class>()
        android:onClick="@{() -> flavorFragment.cancelOrder()}" ... />
    ```
 
-
+<br>
 
 3. 동일한 프로세스를 `PickupFragment`, `SummaryFragment`에도 반복합니다.
 
-
+<br>
 
 + 아직까지의 문제점
 
@@ -787,7 +790,7 @@ var <property-name> : <property-type> by <delegate-class>()
 
  => 이 탐색 버그를 수정하려면 작업을 사용해 탐색할 때 탐색 구성요소가 **추가 대상을 백 스택에서 팝하는 방법**을 사용해야 한다.
 
-
+<br>
 
 #### 백 스택에서 추가 대상 팝하기
 
@@ -801,9 +804,9 @@ var <property-name> : <property-type> by <delegate-class>()
 
 이 새로운 버그를 수정하려면 `StartFragment`에 이르기까지(포함) 모든 대상을 백 스택에서 팝하도록 요청합니다. 적절한 탐색 작업에 `app:popUpTo="@id/startFragment"` 및 `app:popUpToInclusive="true"`를 지정하면 됩니다. 이렇게 하면 백 스택에 새 `StartFragment` 인스턴스가 하나만 생성됩니다. 그런 다음 `StartFragment`에서 **Back** 버튼을 한 번 탭하면 앱이 종료됩니다. 지금 이렇게 변경하겠습니다.
 
+<br>
 
-
-
+<br>
 
 ### 주문 전송하기
 
@@ -825,7 +828,7 @@ var <property-name> : <property-type> by <delegate-class>()
    }
    ```
 
-
+<br>
 
 2. `sendOrder()` 메서드 내에서 주문을 다른 앱에 공유하는 암시적 인텐트를 만듭니다. 이메일 인텐트를 만드는 방법은 문서를 참고하세요. 인텐트 작업에 `Intent.ACTION_SEND`를 지정하고, 유형을 `"text/plain"`으로 설정하고, 이메일 제목(`Intent.EXTRA_SUBJECT`)과 이메일 본문(`Intent.EXTRA_TEXT`)을 위한 인텐트 추가항목을 포함합니다. 필요한 경우 `android.content.Intent`를 가져옵니다.
 
@@ -836,7 +839,7 @@ var <property-name> : <property-type> by <delegate-class>()
        .putExtra(Intent.EXTRA_TEXT, orderSummary)
    ```
 
-   
+   <br>
 
 3. 암시적 인텐트이므로, 이 인텐트를 처리할 특정 구성요소나 앱을 사전에 알지 않아도 됩니다. 인텐트를 처리하는 데 사용할 앱을 사용자가 결정합니다. 하지만 이 인텐트로 활동을 실행하기 전에 이 인텐트를 처리할 수 있는 앱이 있는지 확인하세요. 이렇게 확인하면 인텐트를 처리할 앱이 없는 경우 **Cupcake** 앱이 비정상 종료되지 않습니다. 즉, 코드가 더 안전해집니다.
 
@@ -846,7 +849,7 @@ var <property-name> : <property-type> by <delegate-class>()
    }
    ```
 
-   
+   <br>
 
 + 수량 값에 따라 단수형 cupcake나 복수형 cupcakes를 사용할지 여부를 선택하려면 Android에서 **수량 문자열**을 사용할 수 있습니다. `plurals` 리소스를 선언하면 수량에 따라 사용할 다른 문자열 리소스(예: 단수형 또는 복수형)를 지정할 수 있습니다.
 
@@ -865,7 +868,7 @@ var <property-name> : <property-type> by <delegate-class>()
 
   `getQuantityString(R.string.cupcakes, 6, 6)` 호출 시 문자열 `6 cupcakes` 반환
 
-
+<br>
 
 4. `SummaryFragment` 클래스에서 새 수량 문자열을 사용하도록 `sendOrder()` 메서드를 업데이트합니다. 먼저 뷰 모델에서 수량을 파악하고 이 값을 변수에 저장하는 것이 가장 쉽습니다. 뷰 모델의 `quantity`가 `LiveData<Int>` 유형이므로 `sharedViewModel.quantity.value`가 null일 수 있습니다. null이면 `0`을 `numberOfCupcakes`의 기본값으로 사용합니다.
 
@@ -874,7 +877,7 @@ var <property-name> : <property-type> by <delegate-class>()
    ```kotlin
    val numberOfCupcakes = sharedViewModel.quantity.value ?: 0
 
-
+<br>
 
 5. 최종 `sendOrder()` 코드
 
@@ -900,4 +903,44 @@ var <property-name> : <property-type> by <delegate-class>()
    }
    ```
 
-   
+   <br>
+
+<br>
+
+<br>
+
+## Quiz/Unit3/Pathway4
+
+1. 참 또는 거짓: 여러 활동 또는 프래그먼트에 동일한 ViewModel을 사용하여 데이터를 공유할 수 있습니다.
+
+   => 참
+
+<br>
+
+2. Kotin 속성 위임 접근법을 사용하여 공유 뷰 모델에 액세스할 수 있는 올바른 방법은 무엇인가요?
+   + `val viewModel: OrderViewModel by activityViewModels()`
+
+<br>
+
+3. 빈 칸 채우기
+
+   LiveData **변환**을(를) 사용하여 다른 인스턴스의 값에 따라 다양한 LiveData 인스턴스를 반환합니다.
+
+<br>
+
+4. 객체를 구성하는 데 Kotlin의 `apply` 함수를 사용하려면 어떻게 해야 하나요?
+   + 객체에 할당 세트를 적용할 수 있습니다
+
+<br>
+
+5. 데이터 결합 레이아웃 표현식을 사용할 때 클릭 리스너를 결합하기 위해 이 레이아웃의 버튼에 속성을 추가하는 올바른 구문은 무엇인가요?
+
+   ```kotlin
+   <Button
+       android:id="@+id/next_button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/next" />
+   ```
+
+   => `android:onClick="@{() -> detailFragment.next()}"`
