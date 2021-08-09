@@ -7,20 +7,13 @@
 ### <div align="center">목차</div>
 
 - [Shared ViewModel](#Shared-ViewModel)
-
   - [탐색 그래프 완성하기](#탐색-그래프-완성하기)
-
   - [공유 ViewModel 만들기](#공유-ViewModel-만들기)
-
   - [ViewModel을 사용하여 UI 업데이트](#ViewModel을-사용하여-UI-업데이트)
-
   - [데이터 결합과 함께 ViewModel 사용](#데이터-결합과-함께-ViewModel-사용)
-
-  - [Pickup 및 Summary 프래그먼트를 업데이트하여 뷰 모델 사용](Pickup-및-Summary-프래그먼트를-업데이트하여-뷰-모델-사용)
-
-  - ㅇ
-
-    
+  - [Pickup 및 Summary 프래그먼트를 업데이트하여 뷰 모델 사용](#Pickup-및-Summary-프래그먼트를-업데이트하여-뷰-모델-사용)
+  - [주문 세부 정보에서 가격 계산](#주문-세부-정보에서-가격-계산)
+  - [리스너 결합을 사용하여 클릭 리스너 설정](#리스너-결합을-사용하여-클릭-리스너-설정)
 
 ------
 
@@ -465,29 +458,446 @@ var <property-name> : <property-type> by <delegate-class>()
       />
    ```
 
+   <br>
+
+3. `OrderViewModel` 클래스 내에서 `resetOrder()`라는 함수를 만들어 뷰 모델의 `MutableLiveData` 속성을 재설정합니다. `dateOptions` 목록의 현재 날짜 값을 `_date.`*`value.`*에 할당합니다.
+
+   ```kotlin
+   fun resetOrder() {
+      _quantity.value = 0
+      _flavor.value = ""
+      _date.value = dateOptions[0]
+      _price.value = 0.0
+   }
+   ```
+
+   <br>
+
+4. 클래스에 `init` 블록을 추가하고 여기에서 새로운 `resetOrder()` 메서드를 호출합니다.
+
+   ```kotlin
+   init {
+      resetOrder()
+   }
+   ```
+
+<br>
+
+5. 클래스의 속성 선언에서 초깃값을 삭제합니다. 이제 `OrderViewModel` 인스턴스를 만들 때 `init` 블록을 사용하여 속성을 초기화합니다.
+
+   <br>
+
+#### 뷰 모델을 사용하도록 summary 프래그먼트 업데이트
+
+1. `fragment_summary.xml`에서는, 뷰 모델에서 데이터를 읽어서 주문 요약 세부정보로 화면을 업데이트합니다. 다음 텍스트 속성을 추가하여 수량, 맛, 날짜 `TextViews`를 업데이트합니다. 수량은 `Int` 유형이므로 문자열로 변환해야 합니다.
+
+   ```kotlin
+   <TextView
+      android:id="@+id/quantity"
+      ...
+      android:text="@{viewModel.quantity.toString()}"
+      ... />
+   ```
+
+   ```kotlin
+   <TextView
+      android:id="@+id/flavor"
+      ...
+      android:text="@{viewModel.flavor}"
+      ... />
+   ```
+
+   <br>
+
+<br>
+
+### 주문 세부 정보에서 가격 계산
+
+#### 뷰 모델에서 가격 업데이트
+
+1. `OrderViewModel.kt`를 열고 변수에 컵케이크당 가격을 저장합니다. 즉, 파일 맨 위, 클래스 정의 외부에서(하지만 import 문보다 뒤에) 최상위 private 상수로 선언합니다.
+
+   ```kotlin
+   private const val PRICE_PER_CUPCAKE = 2.00
+   ```
+
+   컵케이크당 가격을 정의했으므로 이제 도우미 메서드를 생성하여 가격을 계산합니다. 이 메서드는 이 클래스 내에서만 사용되므로 `private`일 수 있습니다. 다음 작업에서 당일 수령 요금을 포함하도록 가격 로직을 변경합니다.
+
+   ```kotlin
+   private fun updatePrice() {
+       _price.value = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
+   }
+   ```
+
+   ​	<br>
+
+2. 동일한 `OrderViewModel` 클래스에서 수량이 설정된 경우 가격 변수를 업데이트합니다. `setQuantity()` 함수에서 새 함수를 호출합니다.
+
+<br>
+
+<br>
+
+#### UI에 가격 속성 결합
+
+1. `fragment_flavor.xml`, `fragment_pickup.xml` 및 `fragment_summary.xml`의 레이아웃에서 `com.example.cupcake.model.OrderViewModel` 유형의 **데이터 변수 `viewModel`이 정의되어 있는지 확인**합니다.
+
+   ```kotlin
+   <layout ...>
+   
+       <data>
+           <variable
+               name="viewModel"
+               type="com.example.cupcake.model.OrderViewModel" />
+       </data>
+   
+       <ScrollView ...>
+   
+       ...
+
+<br>
+
+2. 각 프래그먼트 클래스의 `onViewCreated()` 메서드에서 **프래그먼트의 뷰 모델 객체 인스턴스**를 **레이아웃의 뷰 모델 데이터 변수에 결합**해야 합니다.
+
+   ```kotlin
+   binding?.apply {
+       viewModel = sharedViewModel
+       ...
+   }
+   ```
+
+   <br>
+
+3. 각 프래그먼트 레이아웃 내에서 `viewModel` 변수를 사용하여 레이아웃에 표시되는 가격을 설정합니다. 먼저, `fragment_flavor.xml` 파일을 수정합니다. `subtotal` 텍스트 뷰에서 `android:text` 속성의 값을 `"@{@string/subtotal_price(viewModel.price)}".`로 설정합니다. 이 데이터 결합 레이아웃 표현식은 문자열 리소스 `@string/subtotal_price`를 사용하고 뷰 모델의 가격인 매개변수를 전달합니다. 따라서 출력에는 예를 들면 **Subtotal 12.0**이 표시됩니다.
+
+   ```kotlin
+   ...
+   
+   <TextView
+       android:id="@+id/subtotal"
+       android:text="@{@string/subtotal_price(viewModel.price)}"
+       ... />
+   
+   ...
+   ```
+
+   `strings.xml` 파일에서 이미 선언한 다음과 같은 문자열 리소스를 사용합니다.
+
+   ```kotlin
+   <string name="subtotal_price">Subtotal %s</string>
+   ```
+
+<br>
+
+#### 당일 수령 시 추가 요금 청구
+
++ `updatePrice()`에서는 사용자가 당일 수령을 선택했는지 확인합니다. 뷰 모델의 날짜(`_date.value`)가 `dateOptions` 목록의 첫 번째 항목(항상 당일 날짜)과 동일한지 확인합니다.
+
+  ```kotlin
+  private fun updatePrice() {
+      var calculatedPrice = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
+      // If the user selected the first option (today) for pickup, add the surcharge
+      if (dateOptions[0] == _date.value) {
+          calculatedPrice += PRICE_FOR_SAME_DAY_PICKUP
+      }
+      _price.value = calculatedPrice
+  }
+  ```
+
++ `setDate()` 메서드에서 `updatePrice()` 도우미 메서드를 호출하여 당일 수령 요금을 추가합니다.
+
+  ```kotlin
+  fun setDate(pickupDate: String) {
+      _date.value = pickupDate
+      updatePrice()
+  }
+  ```
+
+  <br>
+
+#### LiveData를 관찰하도록 수명 주기 소유자 설정
+
++ `LifecycleOwner`는 활동이나 프래그먼트와 같이 Android 수명 주기를 보유한 클래스입니다. `LiveData` 관찰자는 수명 주기 소유자가 활성 상태(`STARTED` 또는 `RESUMED`)인 경우에만 앱 데이터의 변경사항을 관찰합니다.
+
++ 이 앱에서 `LiveData` 객체 또는 관찰 가능한 데이터는 뷰 모델의 `price` 속성입니다. 수명 주기 소유자는 flavor, pickup, summary 프래그먼트입니다. `LiveData` 관찰자는 가격과 같은 관찰 가능한 데이터가 있는 레이아웃 파일의 결합 표현식입니다. **데이터 결합을 사용하면 관찰 가능한 값이 변경되는 경우 결합된 UI 요소가 자동으로 업데이트됩니다.**
+
++ UI 요소가 자동으로 업데이트되도록 하려면 `binding.lifecycleOwner`를
+
+  앱의 수명 주기 소유자와 연결해야 합니다. 
+
+1. `FlavorFragment`, `PickupFragment` 및 `SummaryFragment` 클래스의 `onViewCreated()` 메서드 내에서 `binding?.apply` 블록에 다음을 추가합니다. 이렇게 하면 **결합 객체에 수명 주기 소유자가 설정**됩니다. 수명 주기 소유자를 설정하면 앱이 `LiveData` 객체를 관찰할 수 있습니다.
+
+   ```kotlin
+   binding?.apply {
+       lifecycleOwner = viewLifecycleOwner
+       ...
+   }
+   ```
+
+   <br>
+
+#### LiveData 변환을 사용하여 가격 형식 지정
+
++ `LiveData` 변환 메서드는 `LiveData` 소스에서 데이터 조작을 실행하고 결과 `LiveData` 객체를 반환하는 방법을 제공합니다. 간단히 말해 `LiveData` 값을 다른 값으로 변환합니다. 관찰자가 `LiveData` 객체를 관찰하고 있지 않다면 이러한 변환은 계산되지 않습니다.
++ `Transformations.map()`은 변환 함수 중 하나이며, 이 메서드는 소스 `LiveData` 및 함수를 매개변수로 사용합니다. 이 함수는 `LiveData` 소스를 조작하고, 관찰할 수도 있는 업데이트된 값을 반환합니다.
++ LiveData 변환을 사용할 수 있는 몇 가지 실시간 예는 다음과 같습니다.
+  - 표시할 날짜 및 시간 문자열 형식 지정
+  - 항목 목록 정렬
+  - 항목 필터링 또는 그룹화
+  - 모든 항목 합계, 항목 수, 마지막 항목 반환 등과 같이 목록의 결과 계산
+
+<br>
+
+1. `OrderViewModel` 클래스에서 지원 속성 유형을 `LiveData<Double>.` 대신 `LiveData<String>`으로 변경합니다. `Transformations.map()`사용하여 새로운 변수를 초기화하고 `_price` 및 람다 함수를 전달합니다. `NumberFormat` 클래스의 `getCurrencyInstance()` 메서드를 사용하여 가격을 현지 통화 형식으로 변환합니다. 변환 코드는 다음과 같습니다.
+
+   ```kotlin
+   private val _price = MutableLiveData<Double>()
+   val price: LiveData<String> = Transformations.map(_price) {
+      NumberFormat.getCurrencyInstance().format(it)
+   }
+
+<br>
+
+### 리스너 결합을 사용하여 클릭 리스너 설정
+
+ 리스너 결합을 사용하여 **프래그먼트 클래스의 버튼 클릭 리스너**를 **레이아웃**에 결합
+
+1. `fragment_start.xml`
+
+   `com.example.cupcake.StartFragment` 유형의 `startFragment`라는 데이터 변수를 추가합니다. 프래그먼트의 패키지 이름이 **앱의 패키지 이름과 일치하는지** 확인합니다.
+
+   ```kotlin
+   <layout ...>
+   
+       <data>
+           <variable
+               name="startFragment"
+               type="com.example.cupcake.StartFragment" />
+       </data>
+       ...
+       <ScrollView ...>
+   ```
+
+<br>
+
+2. `StartFragment.kt` 
+
+   `onViewCreated()` 메서드에서 새 **데이터 변수를 프래그먼트 인스턴스에 결합**합니다. `this` 키워드를 사용하여 프래그먼트 내에서 프래그먼트 인스턴스에 액세스할 수 있습니다. `binding?.apply` 블록과 그 안에 있는 코드를 함께 삭제합니다. 완성된 메서드는 다음과 같습니다.
+
+   ```kotlin
+   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       super.onViewCreated(view, savedInstanceState)
+       binding?.startFragment = this
+   }
+   ```
+
+<br>
+
+3. `fragment_start.xml`
+
+   리스너 결합을 사용하여 **이벤트 리스너를 버튼의 `onClick` 속성에 추가**하고, `startFragment`에서 `orderCupcake()`를 호출하여 컵케이크 수를 전달합니다.
+
+   ```kotlin
+   <Button
+       android:id="@+id/order_one_cupcake"
+       android:onClick="@{() -> startFragment.orderCupcake(1)}"
+       ... />
    
 
-3. 
+<br>
 
+<br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<br>
 
 ## 🎖 Navigation and backstack
 
+### 작업 및 백스택 알아보기
+
++ Android에서 액티비티는 Task안에 존재합니다. 런처 아이콘으로 앱을 처음 열면 Android는 기본 활동이 포함된 새로운 task를 생성합니다. task는 사용자가 이메일 확인, 컵케이크 주문 생성, 사진 촬영 등의 **특정한 일을 할 때 상호작용하는 활동의 모음**입니다.
+
++ 활동은 ***백 스택***이라는 스택으로 배열되며, 사용자가 방문하는 각각의 새 활동은 작업의 백 스택으로 푸시됩니다. 새로 만든 각 팬케이크가 스택 위에 추가되는 팬케이크 스택과 비슷하다고 생각할 수 있습니다. 스택 맨 위에 있는 활동은 사용자가 현재 상호작용하고 있는 활동이고, 스택에서 그 아래에 있는 활동은 백그라운드로 전환되었다가 중지되었습니다.
+
++ 백 스택은 사용자가 뒤로 이동하는 경우 유용합니다. Android는 스택 맨 위에 있는 현재 활동을 삭제하고 폐기한 후 그 아래에 있는 활동을 다시 시작할 수 있습니다. 즉, 스택에서 활동을 팝하고 사용자가 상호작용할 수 있게 이전 활동이 포그라운드로 이동합니다. 사용자가 여러 번 뒤로 이동하고 싶어하는 경우 Android는 스택의 맨 아래에 더 가까워질 때까지 계속 스택 상단에서 활동을 팝합니다. 백 스택에 더 이상 활동이 남아 있지 않으면 사용자는 기기의 런처 화면이나 이 활동을 실행한 앱으로 돌아가게 됩니다.
+
+  > **참고:** 앱을 연 후에 기기에서 **Home**을 탭하면 **앱의 전체 작업이 백그라운드로 전환**됩니다. 앱의 런처 아이콘을 다시 탭하면 Android는 앱의 기존 작업이 있는지 확인한 후 기존 작업을 포그라운드로 가져옵니다(백 스택은 그대로 유지함). 기존 작업이 없는 경우 Android는 자동으로 새 작업을 생성하고 기본 활동을 실행하여 백 스택으로 푸시합니다.
+
++ 탐색 라이브러리를 사용하면 사용자가 **Back** 버튼을 누를 때마다 백 스택에서 프래그먼트 대상을 팝할 수 있습니다. 이 기본 동작은 무료로 제공되며 직접 구현할 필요가 없습니다. 맞춤 백 스택 동작이 필요한 경우에만 코드를 작성하면 됩니다. **Cupcake** 앱에서 이러한 코드를 작성할 것입니다.
+
+<br>
+
+#### Cupcake 앱의 기본 동작
+
++ 이  앱에는 Activity가 하나만 있지만 사용자가 탐색하는 프래그먼트 destination은 여러 개가 있습니다. 따라서 **Back** 버튼을 탭할 때마다 이전 프래그먼트 대상으로 돌아가야 합니다. 
+
++ 주문 흐름에서 이전 단계로(뒤로) 이동하면 대상이 한 번에 하나씩만 팝됩니다. 하지만 다음 작업에서는 앱에 **주문 취소 기능**을 추가합니다. 이렇게 하려면 사용자가 `StartFragment`로 돌아와 **새 주문을 시작할 수 있도록 백 스택의 여러 대상을 한꺼번에 팝**해야 할 수도 있습니다.
+
+  <img src = "https://user-images.githubusercontent.com/31370590/128662549-fdbf4dc2-3fb2-4ac6-a449-4dbdb0435009.PNG" width = "650" height = "400">
+
+  <br>
+
+#### Cupcake 앱에서 백 스택 수정하기
+
+##### 탐색 작업 추가하기
+
++ 먼저 앱의 탐색 그래프에 탐색 작업을 추가하여 사용자가 다음의 대상에서 `StartFragment`로 다시 이동할 수 있도록 합니다.  `summaryFragment`, `pickupFragment`, `flavorFragment`에서 클릭하고 드래그하여 `startFragment`로 이어지는 새 action을 만듭니다. 
++ 이러한 변경을 통해 사용자는 주문 흐름 내의 후반 프래그먼트 중 하나에서 주문 흐름의 시작으로 이동할 수 있습니다. 이제 이러한 작업으로 실제로 이동하는 코드가 필요합니다. 적합한 위치는 **Cancel** 버튼을 탭하는 시점입니다.
+
+
+
+##### 레이아웃에 Cancel 버튼 추가하기
+
+먼저 `StartFragment`를 제외한 모든 프래그먼트에 해당하는 **Cancel** 버튼을 레이아웃 파일에 추가합니다. 주문 흐름의 첫 번째 화면에 이미 있는 경우에는 주문을 취소할 필요가 없습니다.
+
+
+
+#### Cancel 버튼의 클릭 리스너 추가하기
+
+`StartFragment`를 제외한 각 프래그먼트 클래스 내부에 **Cancel** 버튼 클릭 시 처리하는 도우미 메서드를 추가합니다.
+
+1. `FlavorFragment`에 다음 `cancelOrder()` 메서드를 추가합니다. 맛 옵션이 제시되었을 때 사용자가 주문을 취소하기로 결정하는 경우 `sharedViewModel.resetOrder()`를 호출하여 뷰 모델을 지웁니다. 그런 다음 ID가 `R.id.action_flavorFragment_to_startFragment.`인 탐색 작업을 사용하여 `StartFragment`로 다시 이동합니다.
+
+   ```kotlin
+   fun cancelOrder() {
+       sharedViewModel.resetOrder()
+       findNavController().navigate(R.id.action_flavorFragment_to_startFragment)
+   }
+   ```
+
+   
+
+2. 리스너 결합을 사용하여 `fragment_flavor.xml` 레이아웃의 **Cancel** 버튼에 클릭 리스너를 설정합니다. 이 버튼을 클릭하면 `FragmentFlavor` 클래스에서 방금 생성한 `cancelOrder()` 메서드가 호출됩니다.
+
+   ```kotlin
+   <Button
+       android:id="@+id/cancel_button"
+       android:onClick="@{() -> flavorFragment.cancelOrder()}" ... />
+   ```
+
+
+
+3. 동일한 프로세스를 `PickupFragment`, `SummaryFragment`에도 반복합니다.
+
+
+
++ 아직까지의 문제점
+
+  `SummaryFragment`에서 주문을 취소했습니다. `SummaryFragment`에서 `StartFragment`로 작업을 이동할 때 Android는 다른 `StartFragment` 인스턴스를 새 대상으로 백 스택에 추가했습니다. 이런 이유로 인해 `StartFragment`에서 **Back** 버튼을 탭하면 앱이 다시 `SummaryFragment`를 표시(주문 정보가 비어 있음)했습니다.
+
+  <img src = "https://user-images.githubusercontent.com/31370590/128664429-dc374189-5bac-451b-a8d3-12f49f6eeca2.PNG" width = "500" height = "350">
+
+ => 이 탐색 버그를 수정하려면 작업을 사용해 탐색할 때 탐색 구성요소가 **추가 대상을 백 스택에서 팝하는 방법**을 사용해야 한다.
+
+
+
+#### 백 스택에서 추가 대상 팝하기
+
+##### Navigation action: popUpTo attribute
+
++ 탐색 그래프의 탐색 작업에 `app:popUpTo` 속성을 포함하면 지정된 대상에 도달할 때까지 대상 두 개 이상이 백 스택에서 팝될 수 있습니다. `app:popUpTo="@id/startFragment"`를 지정하는 경우 스택에 남게 될 `StartFragment`에 도달할 때까지 백 스택에 있는 대상이 팝됩니다.
+
++ 이 변경사항을 코드에 추가하고 앱을 실행하면 주문 취소 시 `StartFragment`로 돌아가는 것을 확인하게 됩니다. 하지만 이번에는 `StartFragment`에서 **Back** 버튼을 탭하면 앱이 종료되는 대신 `StartFragment`가 다시 표시됩니다. 이 또한 의도한 동작이 아닙니다. 앞서 언급했듯이 `StartFragment`로 이동하면 Android는 실제로 `StartFragment`를 새 대상으로 백 스택에 추가하므로, 이제 백 스택에 StartFragment 인스턴스가 두 개 있습니다. 따라서 앱을 종료하려면 **Back** 버튼을 두 번 탭해야 합니다.
+
+##### Navigation action: popUpToInclusive attribute
+
+이 새로운 버그를 수정하려면 `StartFragment`에 이르기까지(포함) 모든 대상을 백 스택에서 팝하도록 요청합니다. 적절한 탐색 작업에 `app:popUpTo="@id/startFragment"` 및 `app:popUpToInclusive="true"`를 지정하면 됩니다. 이렇게 하면 백 스택에 새 `StartFragment` 인스턴스가 하나만 생성됩니다. 그런 다음 `StartFragment`에서 **Back** 버튼을 한 번 탭하면 앱이 종료됩니다. 지금 이렇게 변경하겠습니다.
+
+
+
+
+
+### 주문 전송하기
+
+암시적 인텐트를 사용하여 앱에서 다른 앱으로 정보를 공유하는 것
+
+기기의 이메일 앱을 통해 상점에 주문을 이메일로 보내 컵케이크 주문 정보를 공유할 수 있습니다. 
+
+1. `SummaryFragment.kt`에서 `sendOrder()` 메서드 내에 주문 요약 텍스트를 작성합니다. 공유 뷰 모델에서 주문 수량, 맛, 날짜, 가격을 가져와서 형식이 지정된 order_details 문자열을 만듭니다. 
+
+   ```kotlin
+   fun sendOrder() {
+       val orderSummary = getString(
+       R.string.order_details,
+       sharedViewModel.quantity.value.toString(),
+       sharedViewModel.flavor.value.toString(),
+       sharedViewModel.date.value.toString(),
+       sharedViewModel.price.value.toString()
+   )
+   }
+   ```
+
+
+
+2. `sendOrder()` 메서드 내에서 주문을 다른 앱에 공유하는 암시적 인텐트를 만듭니다. 이메일 인텐트를 만드는 방법은 문서를 참고하세요. 인텐트 작업에 `Intent.ACTION_SEND`를 지정하고, 유형을 `"text/plain"`으로 설정하고, 이메일 제목(`Intent.EXTRA_SUBJECT`)과 이메일 본문(`Intent.EXTRA_TEXT`)을 위한 인텐트 추가항목을 포함합니다. 필요한 경우 `android.content.Intent`를 가져옵니다.
+
+   ```kotlin
+   val intent = Intent(Intent.ACTION_SEND)
+       .setType("text/plain")
+       .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+       .putExtra(Intent.EXTRA_TEXT, orderSummary)
+   ```
+
+   
+
+3. 암시적 인텐트이므로, 이 인텐트를 처리할 특정 구성요소나 앱을 사전에 알지 않아도 됩니다. 인텐트를 처리하는 데 사용할 앱을 사용자가 결정합니다. 하지만 이 인텐트로 활동을 실행하기 전에 이 인텐트를 처리할 수 있는 앱이 있는지 확인하세요. 이렇게 확인하면 인텐트를 처리할 앱이 없는 경우 **Cupcake** 앱이 비정상 종료되지 않습니다. 즉, 코드가 더 안전해집니다.
+
+   ```kotlin
+   if (activity?.packageManager?.resolveActivity(intent, 0) != null) {
+       startActivity(intent)
+   }
+   ```
+
+   
+
++ 수량 값에 따라 단수형 cupcake나 복수형 cupcakes를 사용할지 여부를 선택하려면 Android에서 **수량 문자열**을 사용할 수 있습니다. `plurals` 리소스를 선언하면 수량에 따라 사용할 다른 문자열 리소스(예: 단수형 또는 복수형)를 지정할 수 있습니다.
+
+  `strings.xml`
+
+  ```kotlin
+  <plurals name="cupcakes">
+      <item quantity="one">%d cupcake</item>
+      <item quantity="other">%d cupcakes</item>
+  </plurals>
+  ```
+
+  => 
+
+  `getQuantityString(R.string.cupcakes, 1, 1)` 호출 시 문자열 `1 cupcake` 반환
+
+  `getQuantityString(R.string.cupcakes, 6, 6)` 호출 시 문자열 `6 cupcakes` 반환
+
+
+
+4. `SummaryFragment` 클래스에서 새 수량 문자열을 사용하도록 `sendOrder()` 메서드를 업데이트합니다. 먼저 뷰 모델에서 수량을 파악하고 이 값을 변수에 저장하는 것이 가장 쉽습니다. 뷰 모델의 `quantity`가 `LiveData<Int>` 유형이므로 `sharedViewModel.quantity.value`가 null일 수 있습니다. null이면 `0`을 `numberOfCupcakes`의 기본값으로 사용합니다.
+
+   `sendOrder()` 메서드
+
+   ```kotlin
+   val numberOfCupcakes = sharedViewModel.quantity.value ?: 0
+
+
+
+5. 최종 `sendOrder()` 코드
+
+   ```kotlin
+   fun sendOrder() {
+       val numberOfCupcakes = sharedViewModel.quantity.value ?: 0
+       val orderSummary = getString(
+           R.string.order_details,
+           resources.getQuantityString(R.plurals.cupcakes, numberOfCupcakes, numberOfCupcakes),
+           sharedViewModel.flavor.value.toString(),
+           sharedViewModel.date.value.toString(),
+           sharedViewModel.price.value.toString()
+       )
+   
+       val intent = Intent(Intent.ACTION_SEND)
+           .setType("text/plain")
+           .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.new_cupcake_order))
+           .putExtra(Intent.EXTRA_TEXT, orderSummary)
+   
+       if (activity?.packageManager?.resolveActivity(intent, 0) != null) {
+           startActivity(intent)
+       }
+   }
+   ```
+
+   
