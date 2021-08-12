@@ -14,7 +14,7 @@
   - [Pickup 및 Summary 프래그먼트를 업데이트하여 뷰 모델 사용](#Pickup-및-Summary-프래그먼트를-업데이트하여-뷰-모델-사용)
   - [주문 세부 정보에서 가격 계산](#주문-세부-정보에서-가격-계산)
   - [리스너 결합을 사용하여 클릭 리스너 설정](#리스너-결합을-사용하여-클릭-리스너-설정)
-- [Navigation and backstack](#Navigation-and-backstack)
+- [Navigation and backstack](#-Navigation-and-backstack)
   + [작업 및 백스택 알아보기](#작업-및-백스택-알아보기)
   + [주문 전송하기](#주문-전송하기)
 
