@@ -81,7 +81,11 @@ class MainActivity : AppCompatActivity() {
         lemonImage!!.setOnLongClickListener {
             // TODO: replace 'false' with a call to the function that shows the squeeze count
             // 길게 눌렀을 때 얼마나 레몬을 짰는지 알려줌
+
+            // LongClickListener만 발동되게 하려면 true를 return하고,
+            // LongClickListener 이후 ClickListener도 발동되게 하려면 false를 return
             showSnackbar()
+            true
         }
     }
 
