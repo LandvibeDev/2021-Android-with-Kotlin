@@ -25,7 +25,7 @@
     - `strings.xml` : 앱에 필요한 모든 문자열 존재
     - `thems` 폴더와 `styles` 폴더에는 앱의 UI 맟춤 설정이 존재
   - **MainActivity.kt**
-    - 활동의 콘텐츠 뷰를 `main_activity.xml`로 설정하기 위한 기본 템플릿 생성 코드 존재
+    - 활동의 콘텐츠 뷰를 `activity_main.xml`로 설정하기 위한 기본 템플릿 생성 코드 존재
   - **ListOfWords.kt**
     - 게임에서 사용되고 있는 단어 목록 존재
     - 게임당 최대 단어 수와 올바르게 추측한 모든 단어에 적용할 점수가 상수로 존재
