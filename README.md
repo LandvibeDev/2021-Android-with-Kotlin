@@ -40,3 +40,5 @@ mark down 확장자로 작성하여 해당 Repository 에 PR 을 날리는 형�
 - **[Week 6](https://github.com/LandvibeDev/2021-Android-with-Kotlin/blob/master/Weekly%20Meeting/Week%206.md)**
 - **[Week 7](https://github.com/LandvibeDev/2021-Android-with-Kotlin/blob/master/Weekly%20Meeting/Week%207.md)**
 
+- **[Week 8](https://github.com/LandvibeDev/2021-Android-with-Kotlin/blob/master/Weekly%20Meeting/Week%208.md)**
+
