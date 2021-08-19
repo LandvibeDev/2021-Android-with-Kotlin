@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuHome"
+        android:enabled="true"
+        android:icon="@drawable/icon_home" />
+    <item
+        android:id="@+id/menuSearch"
+        android:enabled="true"
+        android:icon="@drawable/icon_search" />
+    <item
+        android:id="@+id/menuPlus"
+        android:enabled="true"
+        android:icon="@drawable/icon_plus" />
+    <item
+        android:id="@+id/menuMarket"
+        android:enabled="true"
+        android:icon="@drawable/icon_market" />
+    <item
+        android:id="@+id/menuProfile"
+        android:enabled="true"
+        android:icon="@drawable/icon_profile" />
+</menu>
