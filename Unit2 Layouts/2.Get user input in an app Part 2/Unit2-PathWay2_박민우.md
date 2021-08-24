@@ -20,17 +20,19 @@
 
 
 
-
-
 ## 🎖 Track 2 : change the app icon
 
 ### 런처 아이콘
 
-+ 목표는 기기 모델이나 화면 밀도와 상관없이 런처 아이콘의 모양을 멋지게(선명하고 명확) 만드는 것입니다. 특히 화면 픽셀 밀도는 화면의 인치당 픽셀 수(또는 dpi, 인치당 도트 수)를 나타냅니다. 중밀도 기기(mdpi)의 경우 화면의 인치당 도트 수가 160이지만 초초초고밀도 기기(xxxhdpi)는 화면의 인치당 도트 수가 640입니다.
++ 목표는 **기기 모델이나 화면 밀도와 상관없이 런처 아이콘의 모양을 멋지게(선명하고 명확)** 만드는 것입니다. 특히 **화면 픽셀 밀도**는 **화면의 인치당 픽셀 수**(또는 dpi, 인치당 도트 수)를 나타냅니다. 중밀도 기기(mdpi)의 경우 화면의 인치당 도트 수가 160이지만 초초초고밀도 기기(xxxhdpi)는 화면의 인치당 도트 수가 640입니다.
+
++ 소스 디렉터리(**app > src > main > res**)의 `mipmap` 폴더 : Andriod 앱의 런처 아이콘 에셋을 배치해야 하는 위치이다. 
+
+  ex) mimmap-hdpi
 
   
 
-+ Android의 밀도 한정자
++ Android의 밀도 한정자(density qualifier)
 
   + `mdpi` - 중밀도 화면의 리소스(~160dpi)
   + `hdpi` - 고밀도 화면의 리소스 (~240dpi)
@@ -42,27 +44,35 @@
 
 
 
-
-
 ### 적응형 아이콘(adaptive icon)
+
++ 이는 **어떤 기기나 밀도에서든 획일화된 아이콘 스타일을 가질 수 있도록** 해주는 아이콘 스타일이다. 간단하게 말하자면 마스킹 처리해서 아이콘을 보여주는 형태입니다. 배경 레이어(Background-Layer)와 포그라운드 레이어(Foreground-Layer)를 합한 레이어를 마스크 레이어(Mask-Layer)를 적용해서 보여주는 방식으로 구현되어 있습니다. 
 
 + Foreground and bachground layer
 
-  개발자는 앱 아이콘을 두 레이어, 즉 포그라운드 레이어와 백그라운드 레이어로 구성할 수 있습니다. 위 예에서 흰색 Android 아이콘은 포그라운드 레이어에 있지만 파란색과 흰색 그리드는 백그라운드 레이어에 있습니다. 포그라운드 레이어는 백그라운드 레이어 위에 쌓입니다. 그런 다음 마스크(이 경우에는 원형 마스크)가 맨 위에 적용되어 원형 모양의 앱 아이콘이 생성됩니다.
-
-  
+  개발자는 앱 아이콘을 두 레이어, 즉 **포그라운드 레이어**와 **백그라운드 레이어**로 구성할 수 있습니다. 위 예에서 흰색 Android 아이콘은 포그라운드 레이어에 있지만 파란색과 흰색 그리드는 백그라운드 레이어에 있습니다. 포그라운드 레이어는 백그라운드 레이어 위에 쌓입니다. 그런 다음 마스크(이 경우에는 원형 마스크)가 맨 위에 적용되어 원형 모양의 앱 아이콘이 생성됩니다.
 
 + **vector drawble**(res->drawable->ic_launcher_background)과 **bitmap image**(res->mipmap-~dpi->ic_launcher)는 모두 그래픽을 설명하지만 중요한 차이점이 있습니다.
 
-  **비트맵 이미지**는 각 픽셀의 색상 정보를 제외하고 보유한 이미지에 관해 잘 알지 못합니다. 반면에 벡터 그래픽은 이미지를 정의하는 모양을 그리는 방법을 알고 있습니다. 이러한 지침은 색상 정보와 함께 일련의 점과 선, 곡선으로 구성됩니다. 벡터 그래픽은 화질 저하 없이 모든 화면 밀도의 어떤 캔버스 크기로도 조정할 수 있다는 것이 장점입니다.
+  **비트맵 이미지**는 각 픽셀의 색상 정보를 제외하고 보유한 이미지에 관해 잘 알지 못합니다. 반면에 벡터 그래픽은 이미지를 정의하는 모양을 그리는 방법을 알고 있습니다. 이러한 지침은 색상 정보와 함께 일련의 점과 선, 곡선으로 구성됩니다. 벡터 그래픽은 **화질 저하 없이 모든 화면 밀도의 어떤 캔버스 크기로도 조정할 수 있다**는 것이 장점입니다.
 
-  **벡터 드로어블**은 Android의 벡터 그래픽 구현으로, 휴대기기에서 충분히 유연하도록 만들어졌습니다. 이러한 가능한 요소를 사용하여 XML로 정의할 수 있습니다. 모든 밀도 버킷에 비트맵 애셋 버전을 제공하는 대신 이미지를 한 번만 정의하면 됩니다. 따라서 앱의 크기가 줄어 유지하기가 쉬워집니다.
-
-
+  **벡터 드로어블**은 Android의 벡터 그래픽 구현으로, 휴대기기에서 충분히 유연하도록 만들어졌습니다. 이러한 가능한 요소를 사용하여 **XML로 정의**할 수 있습니다. 모든 밀도 버킷에 비트맵 애셋 버전을 제공하는 대신 이미지를 한 번만 정의하면 됩니다. 따라서 앱의 크기가 줄어 유지하기가 쉬워집니다.
+  
++ 어댑티브 아이콘에 사용하는 백그라운드 레이어와 포그라운드 레이어는 모두 **108x108dp**로 설정해야하며, 마스킹 되는 화면 영역은 최대 **72x72dp**, 최소 **66x66dp**로 설정합니다 
 
 + 이제 적응형 아이콘이 잘 작동하므로 모든 앱 아이콘 비트맵 이미지를 제거할 수 없는 이유가 궁금할 수 있습니다. 이전 버전의 Android에서 앱 아이콘이 고화질로 표시되기 위해(이전 버전과의 호환성이라고 함) 이러한 파일이 여전히 필요합니다.
 
 
+
+Q)
+
++ drawable->**ic_launcher_background.xml**과  **drawable-v24->ic_launcher_foreground.xml** 모두 **vector drawble file**입니다. 픽셀 단위의 고정된 크기는 없다. 코드를 보면 `<vector>`요소를 사용해 벡터 드로어블의 XML선언을 확인할 수 있다. 
+
++ 이 두개의 벡터 드로어블 파일을 이용해 res > mipmap-anydpi-v26->**ic_launcher.xml** 같은 **적응형 아이콘**을 만드는 것
+
++ res->mipmap-~dpi->ic_launcher.**png**는 비트맵 이미지 파일(사진 같은 것은 일련의 모양으로 설명하기 어렵기 때문에 벡터 드로어블보다 비트랩 에셋을 사용하는 것이 더 효율적이다.)
+
+  > **참고**: 적응형 아이콘은 플랫폼의 API 수준 26에서 추가되었으므로 `-v26` 리소스 한정자가 있는 `mipmap` 리소스 디렉터리에서 적응형 아이콘을 선언해야 합니다. 즉, 이 디렉터리의 리소스는 API 26(Android 8.0) 이상을 실행하는 기기에만 적용됩니다. 이 디렉터리의 리소스 파일은 이전 버전의 플랫폼을 실행하는 기기에서는 무시됩니다.
 
 
 
@@ -76,20 +86,33 @@
 
   ```kotlin
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textField"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:hint="@string/label">
+    android:id="@+id/cost_of_service"
+     android:layout_width="160dp"
+     android:layout_height="wrap_content"
+     android:hint="@string/cost_of_service"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toTopOf="parent">
   
-      <com.google.android.material.textfield.TextInputEditText
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+    <com.google.android.material.textfield.TextInputEditText
+         android:id="@+id/cost_of_service_edit_text"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:inputType="numberDecimal" />
       />
   
   </com.google.android.material.textfield.TextInputLayout>
   ```
 
++  `TextInputEditText` 요소에서 리소스 ID가 `cost_of_service_edit_text`인 사용자 입력을 가져옵니다. `MainActivity`에서 `binding.costOfServiceEditText`를 사용하여 저장된 텍스트 문자열에 액세스합니다. 
 
+  ```kotlin
+  private fun calculateTip() {
+      // Get the decimal value from the cost of service text field
+      val stringInTextField = binding.costOfServiceEditText.text.toString()
+      val cost = stringInTextField.toDoubleOrNull()
+  
+      ...
+  }
 
 + Android 플랫폼의 `Switch` 대신 MDC 라이브러리의 `SwitchMaterial`을 사용할 때 이점은 라이브러리의 `SwitchMaterial` 구현이 업데이트되면(예: 머티리얼 디자인 가이드라인 변경) 직접 변경하지 않고도 무료로 위젯이 업데이트된다는 점입니다. 덕분에 미래에 대비한 앱을 마련할 수 있습니다.
 

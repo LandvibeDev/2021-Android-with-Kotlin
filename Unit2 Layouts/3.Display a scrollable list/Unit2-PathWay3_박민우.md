@@ -65,6 +65,8 @@
   + `entrees.clear()` : 전체 List 삭제
 
   + `entrees.isEmpty()`
+  
+  + `entrees.size()` 
 
 
 
@@ -78,7 +80,7 @@
   val guestsPerFamily = listOf(2, 4, 1, 3)
   var totalGuests = 0
   var index = 0
-  while (index < guestsPerFamily.size) {
+  while (index < guestsPerFamily.size) { // index = 0, 1, 2, 3
       totalGuests += guestsPerFamily[index]
       index++
   }
@@ -105,8 +107,29 @@
 
 + toString() 메서드 재정의
 
-  + **객체 인스턴스를 출력하면 객체의 `toString()` 메서드가 호출**됩니다. Kotlin에서는 모든 클래스가 자동으로 `toString()` 메서드를 상속합니다. 이 메서드의 기본 구현에서는 **인스턴스의 메모리 주소가 있는 객체 유형**을 반환합니다. 좀 더 의미 있고 사용자 친화적인 내용을 반환하도록 `toString()`을 재정의해야 합니다.
+  + **객체 인스턴스를 출력하면 객체의 `toString()` 메서드가 호출**됩니다. Kotlin에서는 모든 클래스가 자동으로 `toString()` 메서드를 상속합니다. 이 메서드의 기본 구현에서는 **인스턴스의 메모리 주소가 있는 객체 유형**을 반환합니다. 
 
+    ```kotlin
+    open class Item(val name: String, val price: Int)
+    
+    class Noodles : Item("Noodles", 10)
+    class Vegetables : Item("Vegetables", 5)
+    
+    fun main() {
+        val noodles = Noodles()
+        val vegetables = Vegetables()
+        println(noodles)
+        println(vegetables)
+    }
+    
+    
+    // print result
+    Noodles@5451c3a8
+    Vegetables@76ed5528
+    ```
+  
+  + 좀 더 의미 있고 사용자 친화적인 내용을 반환하도록 `toString()`을 재정의해야 합니다.
+  
   + ```kotlin
     class Noodles : Item("Noodles", 10) {
        override fun toString(): String {
@@ -119,17 +142,20 @@
 
 + `vararg`
 
-  + Kotlin에서 `vararg` 수정자를 사용하면 동일한 유형의 가변적인 인수 수를 함수나 생성자에 전달할 수 있습니다. 이렇게 하면 목록 대신 개별 문자열로 다양한 채소를 제공할 수 있습니다. 
+  + Kotlin에서 `vararg` 수정자를 사용하면 **동일한 유형의 가변적인 인수 수**를 함수나 생성자에 전달할 수 있습니다. 이렇게 하면 목록 대신 개별 문자열로 다양한 채소를 제공할 수 있습니다. 
 
   + ```kotlin
     class Vegetables(vararg val toppings: String) : Item("Vegetables", 5) {
+        
+    // 원래 코드
+    class Vegetables(val toppings: List<String>) : Item("Vegetables", 5) 
     ```
-
+    
   + 매개변수 하나만 `vararg`로 표시할 수 있으며 이 하나는 일반적으로 목록의 마지막 매개변수입니다.
 
 
 
-+ toString() 메서드 재정의
++ toString() 메서드 재정의 
 
   ```kotlin
   class Vegetables(vararg val toppings: String) : Item("Vegetables", 5) {
@@ -145,7 +171,7 @@
 
   + 이제 `Vegetables` 클래스의 `toString()` 메서드를 수정하여 `Vegetables Cabbage, Sprouts, Onion` 형식의 토핑도 언급하는 `String`을 반환하도록 합니다. 
 
-  + 항목 이름(`Vegetables`)으로 시작해, `joinToString()` 메서드를 사용하여 모든 토핑을 단일 문자열로 결합합하고, 사이에 공백이 있는 `+` 연산자를 사용하여 두 부분을 함께 추가합니다
+  + 항목 이름(`Vegetables`)으로 시작해, **`joinToString()` 메서드를 사용하여 모든 토핑을 단일 문자열로 결합**하고, 사이에 공백이 있는 `+` 연산자를 사용하여 두 부분을 함께 추가합니다
 
     > 쉼표 외에 다른 구분자를 지정하려면 원하는 구분자 문자열을 `joinToString()` 메서드의 인수로 전달하세요. 예: 공백으로 각 항목을 구분하는 `joinToString(" ")`
 
@@ -169,7 +195,7 @@
   }
   ```
 
-  + `Order` 클래스의 `addItem()` 및 `addAll()` 메서드에서 `Unit`(또는 아무것도 없음)을 반환하는 대신 ***변경된 `Order`를 반환***합니다. Kotlin은 키워드 `this`를 제공하여 **현재 객체 인스턴스를 참조**합니다. `addItem()` 및 `addAll()` 메서드 내에서 `this`를 반환하여 현재 `Order`를 반환합니다.
+  + `Order` 클래스의 `addItem()` 및 `addAll()` 메서드에서 `Unit`(또는 아무것도 없음)을 반환하는 대신 ***변경된 `Order`를 반환***(`return this`를 통해)합니다. Kotlin은 키워드 `this`를 제공하여 **현재 객체 인스턴스를 참조**합니다. `addItem()` 및 `addAll()` 메서드 내에서 `this`를 반환하여 현재 `Order`를 반환합니다.
 
   + `main()` 함수에서 이제 다음 코드와 같이 ***호출을 함께 연결***할 수 있습니다. 이 코드는 새 `Order`를 만들고 빌더 패턴을 활용합니다.
 
@@ -309,7 +335,7 @@ fun main() {
 ### 패키지 이름 정하기
 
 + 패키지 이름은 일반적으로 일반에서 구체적인 순서로 구성되며 이름의 각 부분을 소문자로 표기하고 마침표로 구분합니다. 중요: 마침표는 이름의 일부일 뿐이며 코드 내의 계층 구조를 나타내거나 폴더 구조를 지시하지 않습니다.
-+ 인터넷 도메인은 전역적으로 고유하므로, 이름 첫 부분에 개발자의 도메인이나 비즈니스의 도메인을 사용하는 것이 규칙입니다.
++ 인터넷 도메인은 전역적으로 고유하므로, **이름 첫 부분에 개발자의 도메인이나 비즈니스의 도메인을 사용하는 것이 규칙**입니다.
 + 패키지 이름을 선택하여 패키지에 포함된 내용 및 패키지 간의 관계를 표시할 수 있습니다.
 + 이런 코드의 예로, `com.example` 다음에 앱 이름을 사용하는 것이 일반적입니다.   
 
@@ -339,7 +365,7 @@ package com.example.affirmations.data
 import com.example.affirmations.R
 import com.example.affirmations.model.Affirmation
 
-class Datasource {
+class Datasource { // 이 클래스는 객체를 호출하기 위해 만든 클래스가 아니라, 뭐랄까 loadAffirmations를 호출하기 위한 class?
 
     fun loadAffirmations(): List<Affirmation> {
         return listOf<Affirmation>(
@@ -366,9 +392,9 @@ class Datasource {
 
 <img src = "https://user-images.githubusercontent.com/31370590/125922681-8fc4d14b-2785-45a7-a84a-121edd87b17d.PNG" width = "400" height = "300">
 
-+ **항목** - 표시할 목록의 단일 데이터 항목입니다. 앱의 `Affirmation` 객체 하나를 나타냅니다.
++ **item** - 표시할 목록의 단일 데이터 항목입니다. 앱의 `Affirmation` 객체 하나를 나타냅니다.
 + **어댑터** - `RecyclerView`에서 표시할 수 있도록 데이터를 가져와 준비합니다.
-+ **ViewHolder** - 확인을 표시하기 위해 사용하거나 재사용할 `RecyclerView`용 뷰의 풀입니다.
++ **ViewHolder** - affirmations를 표시하기 위해 사용하거나 재사용할 `RecyclerView`용 뷰의 풀입니다.
 + **RecyclerView** - 화면에 표시되는 뷰입니다.
 
 
@@ -465,6 +491,13 @@ class ItemAdapter(
 }
 ```
 
++ `getItemCount()` =>  데이터 세트의 크기를 반환
+
+  ```kotlin
+  override fun getItemCount(): Int {
+      return dataset.size
+  }
+
 + `onCreateViewHolder()`
 
   `RecyclerView`의 새 뷰 홀더를 만들기 위해 레이아웃 관리자가 호출합니다(재사용할 수 있는 기존 뷰 홀더가 없는 경우). 뷰 홀더는 단일 목록 항목 뷰를 나타냅니다.
@@ -472,9 +505,28 @@ class ItemAdapter(
   + `parent` 매개변수: 새 목록 항목 뷰가 하위 요소로 사용되어 연결되는 뷰 그룹입니다. 상위 요소는 `RecyclerView`입니다.
   + `viewType` 매개변수: 동일한 `RecyclerView`에 항목 뷰 유형이 여러 개 있을 때 중요해집니다. `RecyclerView` 내에 다른 목록 항목 레이아웃이 표시된다면 다른 항목 뷰 유형이 있는 것입니다. 동일한 항목 뷰 유형을 가진 뷰만 재활용할 수 있습니다. 이 경우에는 목록 항목 레이아웃이 하나만 있고 항목 뷰 유형이 하나이므로 이 매개변수에 관해 걱정할 필요가 없습니다.
 
+  ```kotlin
+   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+          // create a new view
+          val adapterLayout = LayoutInflater.from(parent.context)
+              .inflate(R.layout.list_item, parent, false)
+  
+          return ItemViewHolder(adapterLayout)
+      }
+  ```
+
 + `onBindViewHolder()`
 
-  목록 항목 뷰의 콘텐츠를 바꾸기 위해 레이아웃 관리자가 호출합니다
+  목록 항목 뷰의 콘텐츠를 바꾸기 위해 레이아웃 관리자가 호출합니다.
+  
+  ```kotlin
+  override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+      val item = dataset[position]
+      holder.textView.text =  context.resources.getString(item.stringResourceId)
+  }
+  ```
+  
+  
 
 
 
