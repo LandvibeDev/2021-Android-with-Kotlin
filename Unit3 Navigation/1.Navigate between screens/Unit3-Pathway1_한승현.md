@@ -148,7 +148,7 @@
 
   * **수명 주기 메서드 살펴보기 및 기본 로깅 추가**
 
-    ![f6b25a71cec4e401.png](https://developer.android.com/codelabs/basic-android-kotlin-training-activity-lifecycle/img/f6b25a71cec4e401.png)
+    <img src="https://developer.android.com/codelabs/basic-android-kotlin-training-activity-lifecycle/img/f6b25a71cec4e401.png" alt="f6b25a71cec4e401.png" style="zoom:30%;" />
 
     * `onCreate()`
       * 모든 액티비티에서 구현해야 하는 메서드
